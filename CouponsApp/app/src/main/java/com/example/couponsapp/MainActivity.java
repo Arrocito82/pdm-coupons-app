@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,12 +21,22 @@ public class MainActivity extends AppCompatActivity {
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-    Button google_btn;
+    ImageView google_btn;
+
+    EditText username, password;
+    Button loginbtn;
+
+    String user, pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //obtener datos de inicio de sesión sin google
+        username = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.password);
+        loginbtn = (Button) findViewById(R.id.loginbtn);
 
         //Obtener datos inciales
         google_btn = findViewById(R.id.google_btn);
@@ -35,6 +47,21 @@ public class MainActivity extends AppCompatActivity {
             navigateToInicioActivity();
         }
 
+        //iniciar sesión sin google
+        loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user = username.getText().toString();
+                pass = password.getText().toString();
+                if(user.equals("") || pass.equals("")){
+                    Toast.makeText(MainActivity.this, "Ingresar los campos", Toast.LENGTH_SHORT).show();
+                }
+                else{
+
+                }
+            }
+        });
+
         //Iniciar sesión
         google_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,9 +71,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     void inicioSesion(){
         Intent inicioSesionIntent = gsc.getSignInIntent();
         startActivityForResult(inicioSesionIntent, 1000);
+    }
+
+    void iniciarSesionNoGoogle(){
+
     }
 
     @Override
@@ -63,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void navigateToInicioActivity(){
+    public void navigateToInicioActivity(){
         finish();
-        Intent intent = new Intent(this, InicioActivity.class);
-        startActivity(intent);
+        Intent inte= new Intent(this, InicioActivity.class);
+        startActivity(inte);
     }
 }

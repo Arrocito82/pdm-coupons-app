@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.couponsapp.vistas.CameraFragment;
+import com.example.couponsapp.vistas.HomeFragment;
+import com.example.couponsapp.vistas.MapFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
