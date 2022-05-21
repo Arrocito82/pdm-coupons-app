@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     void inicioSesion(){
         Intent inicioSesionIntent = gsc.getSignInIntent();
         startActivityForResult(inicioSesionIntent, 1000);
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 1000){
+        if(requestCode == 1000){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 task.getResult(ApiException.class);
@@ -62,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void navigateToInicioActivity(){
+    public void navigateToInicioActivity(){
         finish();
-        Intent intent = new Intent(this, InicioActivity.class);
-        startActivity(intent);
+        Intent inte= new Intent(this, InicioActivity.class);
+        startActivity(inte);
     }
 }
