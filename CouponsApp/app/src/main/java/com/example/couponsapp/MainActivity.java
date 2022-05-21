@@ -26,15 +26,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Obtener datos inciales
         google_btn = findViewById(R.id.google_btn);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this,gso);
-
         GoogleSignInAccount cuenta = GoogleSignIn.getLastSignedInAccount(this);
         if(cuenta!=null){
             navigateToInicioActivity();
         }
 
+        //Iniciar sesión
         google_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
