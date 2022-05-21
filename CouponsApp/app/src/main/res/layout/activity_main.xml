@@ -11,23 +11,26 @@
         android:id="@+id/iniciosesion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
         android:gravity="center"
         android:text="CouponsApp"
         android:textColor="@color/white"
         android:textSize="35dp"
-        android:textStyle="bold" />
-
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:background="@drawable/logo"
+        android:id="@+id/logo"
+        android:layout_below="@id/iniciosesion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"/>
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iniciosesion"
+        android:layout_below="@id/logo"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="70dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="10dp"
         android:background="#30ffffff"
@@ -60,20 +63,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/password"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/design_default_color_secondary"
         android:text="Iniciar sesión"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:layout_margin="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginbtn"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="100dp"
         android:gravity="center">
 
         <ImageView
