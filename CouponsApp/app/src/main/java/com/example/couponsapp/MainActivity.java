@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.couponsapp.dbHelper.Control;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,19 +20,22 @@ import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity {
 
+    Control ctr = new Control(this);
+
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     ImageView google_btn;
 
     EditText username, password;
     Button loginbtn;
-
     String user, pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        crearTablas();
 
         //obtener datos de inicio de sesión sin google
         username = (EditText) findViewById(R.id.username);
@@ -99,5 +103,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
         Intent inte= new Intent(this, InicioActivity.class);
         startActivity(inte);
+    }
+
+    public void crearTablas(){
+        ctr.abrir();
+        ctr.cerrar();
     }
 }
