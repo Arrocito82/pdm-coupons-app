@@ -1,0 +1,3 @@
+En su carpeta htdocs o www (dependiendo si tiene algun software gestor como xamm
+o si esta instalado de manera global su apache) copiar y pegar la carpeta
+"serviciosWeb" para asi consumirlos.
