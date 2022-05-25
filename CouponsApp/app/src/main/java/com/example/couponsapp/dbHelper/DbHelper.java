@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASENAME = "cupones.s3db";
-    private static final int DATABASEVERSION = 1;
+    private static final int DATABASEVERSION = 2;
 
     public DbHelper(Context context) {
         super(context, DATABASENAME, null, DATABASEVERSION);
@@ -47,24 +47,19 @@ public class DbHelper extends SQLiteOpenHelper {
                 "ID_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "USERNAME VARCHAR(40) NOT NULL, \n" +
                 "PASSWORD VARCHAR(40) NOT NULL, \n" +
-                "EMAIL VARCHAR(40) NOT NULL, \n" +
+                "EMAIL VARCHAR(100) NOT NULL, \n" +
+                "NOMBRE VARCHAR(40) NOT NULL, \n" +
+                "APELLIDO VARCHAR(40) NOT NULL, \n" +
+                "GOOGLE_USUARIO INTEGER NOT NULL, \n" +
                 "UNIQUE(USERNAME, EMAIL))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS CLIENTE(" +
-                "ID_CLIENTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "ID_USUARIO INTEGER, \n" +
-                "NOMBRE_CLIENTE VARCHAR(40) NOT NULL, \n" +
-                "APELLIDO_CLIENTE VARCHAR(40) NOT NULL, \n" +
-                "SEXO_CLIENTE VARCHAR(1) NOT NULL, \n" +
-                "UNIQUE(ID_CLIENTE, ID_USUARIO))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS CUPONESDECLIENTE(" +
-                "ID_CUPON_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS REGISTROCUPON(" +
+                "ID_REGISTRO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "ID_CUPON INTEGER NOT NULL, \n" +
-                "ID_CLIENTE INTEGER NOT NULL, \n" +
+                "ID_USUARIO INTEGER NOT NULL, \n" +
                 "FECHA_CANJEO VARCHAR(35) NOT NULL, \n" +
-                "UNIQUE(ID_CUPON_USUARIO, ID_CUPON, ID_CLIENTE))");
-
+                "UNIQUE(ID_REGISTRO, ID_CUPON, ID_USUARIO))");
 
 
         /*              TRIGGERS              */
@@ -108,7 +103,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS TIPOCUPON");
         db.execSQL("DROP TABLE IF EXISTS CUPON");
         db.execSQL("DROP TABLE IF EXISTS USUARIO");
-        db.execSQL("DROP TABLE IF EXISTS CLIENTE");
-        db.execSQL("DROP TABLE IF EXISTS CUPONESDECLIENTE");
+        db.execSQL("DROP TABLE IF EXISTS REGISTROCUPON");
     }
 }
