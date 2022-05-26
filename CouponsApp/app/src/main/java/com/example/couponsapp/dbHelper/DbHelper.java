@@ -43,15 +43,32 @@ public class DbHelper extends SQLiteOpenHelper {
                 "DISPONIBLE INTEGER NOT NULL," +
                 "UNIQUE(ID_CUPON, ID_RESTAURANTE, ID_TIPO))");
 
+        db.execSQL("CREATE TABLE IF NOT EXISTS ROL(" +
+                "ID_ROL INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+                "NOMBRE_ROL VARCHAR(40) NOT NULL)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS PERMISO(" +
+                "ID_PERMISO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+                "NOMBRE_PERMISO VARCHAR(40) NOT NULL)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS ROLPERMISO(" +
+                "ID_ROL_PERMISO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
+                "ID_ROL INTEGER NOT NULL, \n" +
+                "ID_PERMISO INTEGER NOT NULL," +
+                "UNIQUE(ID_ROL_PERMISO, ID_ROL, ID_PERMISO))");
+
         db.execSQL("CREATE TABLE IF NOT EXISTS USUARIO(" +
                 "ID_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "USERNAME VARCHAR(40) NOT NULL, \n" +
+                "ID_ROL INTEGER NOT NULL, \n" +
+                "ID_RESTAURANTE, \n" +
+                "USERNAME VARCHAR(40) NOT NULL UNIQUE, \n" +
                 "PASSWORD VARCHAR(40) NOT NULL, \n" +
-                "EMAIL VARCHAR(100) NOT NULL, \n" +
+                "EMAIL VARCHAR(100) NOT NULL UNIQUE, \n" +
                 "NOMBRE VARCHAR(40) NOT NULL, \n" +
                 "APELLIDO VARCHAR(40) NOT NULL, \n" +
+                "TELEFONO VARCHAR(8) NOT NULL, \n" +
                 "GOOGLE_USUARIO INTEGER NOT NULL, \n" +
-                "UNIQUE(USERNAME, EMAIL))");
+                "UNIQUE(ID_USUARIO, ID_ROL))");
 
 
         db.execSQL("CREATE TABLE IF NOT EXISTS REGISTROCUPON(" +
