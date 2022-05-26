@@ -19,9 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.couponsapp.vistas.CameraFragment;
+import com.example.couponsapp.controladores.UsuarioControl;
+import com.example.couponsapp.modelos.Usuario;
+import com.example.couponsapp.vistas.CanjearCuponFragment;
+import com.example.couponsapp.vistas.GestionarCuponFragment;
 import com.example.couponsapp.vistas.HomeFragment;
-import com.example.couponsapp.vistas.MapFragment;
+import com.example.couponsapp.vistas.GestionarUsuarioFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,11 +44,16 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
     NavigationView navigationView;
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
+    Bundle extras;
 
+    UsuarioControl usuarioControl = new UsuarioControl(this);
+    Usuario usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+
+        extras = getIntent().getExtras();
 
         //Obtener datos generales
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -62,10 +70,38 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
         if (cuenta != null) {
             String nombreUser = cuenta.getDisplayName();
             String emailUser = cuenta.getEmail();
+
+            if(usuarioControl.userExist(cuenta.getGivenName(), cuenta.getEmail()) == 0){
+
+                int indexUser = cuenta.getEmail().indexOf('@');
+                String userString = cuenta.getEmail().substring(0, indexUser);
+
+                usuarioControl.insertUsuario(new Usuario(
+                        0, //no tiene relevancia para insert
+                        3,
+                        0,
+                        userString,
+                        "bixxortnnuis34",
+                        cuenta.getEmail(),
+                        cuenta.getDisplayName(),
+                        "",
+                        "",
+                        1
+                ));
+            }
+
             Uri userPhoto = cuenta.getPhotoUrl();
             nombre.setText(nombreUser);
             email.setText(emailUser);
             Glide.with(this).load(String.valueOf(userPhoto)).into(foto);
+        }
+
+        if(extras != null){
+            String user = extras.getString("username");
+            String password = extras.getString("password");
+            usuario = usuarioControl.traerUsuario(user, password);
+            nombre.setText(usuario.getNombre() + " " + usuario.getApellido());
+            email.setText(usuario.getEmail());
         }
 
         //Inicializar en la opcion home
@@ -79,6 +115,8 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
 
         //Seleccion de opcion
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Esconder opciones
     }
 
     @Override
@@ -101,14 +139,17 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
 
     private void selectItemNav(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_camara:
-                replaceFragment(new CameraFragment());
+            case R.id.nav_gestion_cupon:
+                replaceFragment(new GestionarCuponFragment());
                 break;
             case R.id.nav_home:
                 replaceFragment(new HomeFragment());
                 break;
-            case R.id.nav_mapa:
-                replaceFragment(new MapFragment());
+            case R.id.nav_gestion_usuario:
+                replaceFragment(new GestionarUsuarioFragment());
+                break;
+            case R.id.nav_canjear_cupon:
+                replaceFragment(new CanjearCuponFragment());
                 break;
             case R.id.nav_cerrar_sesion:
                 cerrarSesion();
@@ -143,4 +184,5 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

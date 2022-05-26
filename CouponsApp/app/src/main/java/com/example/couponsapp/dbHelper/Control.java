@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteException;
 public class Control {
     private Context context;
     private DbHelper dbHelper;
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
 
     public Control(Context context) {
         this.context = context;

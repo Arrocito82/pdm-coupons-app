@@ -12,10 +12,10 @@ import com.example.couponsapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CameraFragment#newInstance} factory method to
+ * Use the {@link GestionarUsuarioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CameraFragment extends Fragment {
+public class GestionarUsuarioFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class CameraFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CameraFragment() {
+    public GestionarUsuarioFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class CameraFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CameraFragment.
+     * @return A new instance of fragment GestionarUsuarioFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CameraFragment newInstance(String param1, String param2) {
-        CameraFragment fragment = new CameraFragment();
+    public static GestionarUsuarioFragment newInstance(String param1, String param2) {
+        GestionarUsuarioFragment fragment = new GestionarUsuarioFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+        return inflater.inflate(R.layout.fragment_gestionar_usuario, container, false);
     }
 }
