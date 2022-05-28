@@ -10,14 +10,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.couponsapp.controladores.CuponControl;
+import com.example.couponsapp.controladores.DireccionControl;
 import com.example.couponsapp.controladores.PermisoControl;
+import com.example.couponsapp.controladores.RestauranteControl;
 import com.example.couponsapp.controladores.RolControl;
 import com.example.couponsapp.controladores.RolPermisoControl;
+import com.example.couponsapp.controladores.TipoCuponControl;
 import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.dbHelper.Control;
+import com.example.couponsapp.modelos.Cupon;
+import com.example.couponsapp.modelos.Direccion;
 import com.example.couponsapp.modelos.Permiso;
+import com.example.couponsapp.modelos.Restaurante;
 import com.example.couponsapp.modelos.Rol;
 import com.example.couponsapp.modelos.RolPermiso;
+import com.example.couponsapp.modelos.TipoCupon;
 import com.example.couponsapp.modelos.Usuario;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,8 +34,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     Control ctr = new Control(this);
@@ -35,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     PermisoControl permisoControl = new PermisoControl(this);
     RolPermisoControl rolPermisoControl = new RolPermisoControl(this);
     UsuarioControl usuarioControl = new UsuarioControl(this);
+    TipoCuponControl tipoCuponControl = new TipoCuponControl(this);
+    DireccionControl direccionControl = new DireccionControl(this);
+    RestauranteControl restauranteControl = new RestauranteControl(this);
+    CuponControl cuponControl = new CuponControl(this);
 
     /*
     *
@@ -55,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         crearTablas();
+
         if(usuarioControl.adminExist(1) == 0){
             llenarUsuarios();
+            llenarBD();
         }
 
         //obtener datos de inicio de sesión sin google
@@ -156,5 +168,70 @@ public class MainActivity extends AppCompatActivity {
         long usuarioAdmin = usuarioControl.insertUsuario(new Usuario(1, (int)rolAdmin, 0,"admin", "admin123", "admin@gmail.com", "Eduardo", "Orellana", "78787878", 0));
         long usuarioEncargado = usuarioControl.insertUsuario(new Usuario(2, (int)rolEncargado, 1,"encargado", "encargado123", "encargado@gmail.com", "Julia", "Lopez", "79235499", 0));
         long usuarioCliente = usuarioControl.insertUsuario(new Usuario(3, (int)rolCliente, 0,"cliente", "cliente123", "encargado@gmail.com", "Julia", "Lopez", "75757575", 0));
+    }
+
+    public void llenarBD(){
+        //Direccion
+        long dir1 = direccionControl.insertDireccion(new Direccion(1, "San Salvador", "Los Próceres", ""));
+        Direccion direccion = new Direccion(1, "San Salvador", "Los Próceres", "");
+
+        //Restaurante
+        long res1 = restauranteControl.insertRestaurante(new Restaurante(1, "Pizza Hut", direccion));
+        Restaurante restaurante = new Restaurante(1, "Pizza Hut", direccion);
+
+        //TipoCupon
+        long tipoDesayuno = tipoCuponControl.insertTipoCupon(new TipoCupon(1, "Desayuno"));
+        TipoCupon tip1 = new TipoCupon(1, "Desayuno");
+        long tipoAlmuerzo = tipoCuponControl.insertTipoCupon(new TipoCupon(2, "Almuerzo"));
+        TipoCupon tip2 = new TipoCupon(2, "Almuerzo");
+        long tipoCena = tipoCuponControl.insertTipoCupon(new TipoCupon(3, "Cena"));
+        TipoCupon tip3 = new TipoCupon(3, "Cena");
+        long tipoSnacks = tipoCuponControl.insertTipoCupon(new TipoCupon(4, "Snacks"));
+        TipoCupon tip4 = new TipoCupon(4, "Snacks");
+
+        //Cupones
+        long cup1 = cuponControl.insertCupon(new Cupon(
+                1,
+                restaurante,
+                tip2,
+                "CP001",
+                "Pizza gigante + Pan con ajo",
+                "Una pizza gigante de 12 porciones y 4 panes con ajo",
+                12.75,
+                "12:00pm - 23:59pm",
+                1));
+
+        long cup2 = cuponControl.insertCupon(new Cupon(
+                2,
+                restaurante,
+                tip1,
+                "CP002",
+                "Combo típico",
+                "3 desayunos típicos + refil de café",
+                7.55,
+                "6:00am - 11:30pm",
+                1));
+
+        long cup3 = cuponControl.insertCupon(new Cupon(
+                3,
+                restaurante,
+                tip3,
+                "CP003",
+                "Pasta Calssone Club",
+                "2 Pastas Calssone + 1 Pepsi de 1.25L",
+                5.65,
+                "5:45pm - 9:30pm",
+                1));
+
+        long cup4 = cuponControl.insertCupon(new Cupon(
+                4,
+                restaurante,
+                tip4,
+                "CP004",
+                "Conos Putch",
+                "4 conos de helado de vainilla + topin de elección",
+                2.99,
+                "10:30am - 9:30pm",
+                1));
     }
 }

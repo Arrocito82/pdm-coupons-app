@@ -1,66 +1,133 @@
 package com.example.couponsapp.vistas;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import com.example.couponsapp.R;
+import com.example.couponsapp.adapter.ListAdapterCupon;
+import com.example.couponsapp.controladores.CuponControl;
+import com.example.couponsapp.controladores.TipoCuponControl;
+import com.example.couponsapp.modelos.Cupon;
+import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CanjearCuponFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CanjearCuponFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ArrayList<Cupon> listaCupones;
+    Button des, alm, cen, sna;
+    RecyclerView recyclerView;
+    String tipoCurrent;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CanjearCuponFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CanjearCuponFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CanjearCuponFragment newInstance(String param1, String param2) {
-        CanjearCuponFragment fragment = new CanjearCuponFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    int id_usuario;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_canjear_cupon, container, false);
+        Bundle data = getArguments();
+        View root = inflater.inflate(R.layout.fragment_canjear_cupon, container, false);
+
+        CuponControl cuponControl = new CuponControl(root.getContext());
+
+        des = (Button) root.findViewById(R.id.btnDes);
+        alm = (Button) root.findViewById(R.id.btnAlm);
+        cen = (Button) root.findViewById(R.id.btnCen);
+        sna = (Button) root.findViewById(R.id.btnSna);
+
+        id_usuario = data.getInt("id_user");
+        listaCupones = cuponControl.traerCupones("");
+        llenarLista(root, listaCupones);
+
+        des.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tipoCurrent = "Desayuno";
+                listaCupones = cuponControl.traerCupones(tipoCurrent);
+                llenarLista(root, listaCupones);
+            }
+        });
+
+        alm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tipoCurrent = "Almuerzo";
+                listaCupones = cuponControl.traerCupones(tipoCurrent);
+                llenarLista(root, listaCupones);
+            }
+        });
+
+        cen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tipoCurrent = "Cena";
+                listaCupones = cuponControl.traerCupones(tipoCurrent);
+                llenarLista(root, listaCupones);
+            }
+        });
+
+        sna.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tipoCurrent = "Snacks";
+                listaCupones = cuponControl.traerCupones(tipoCurrent);
+                llenarLista(root, listaCupones);
+            }
+        });
+
+
+        return root;
+    }
+
+    public void llenarLista(View view, ArrayList<Cupon> lis){
+        try {
+            ListAdapterCupon listAdapterCat = new ListAdapterCupon(lis, view.getContext(), new ListAdapterCupon.OnItemClickListener() {
+                @Override
+                public void onItemClick(Cupon cupon) {
+                    moveToDescription(cupon);
+                }
+            });
+            recyclerView = view.findViewById(R.id.listCatRecycleView);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+            recyclerView.setAdapter(listAdapterCat);
+        }
+        catch (SQLiteException sql){
+            sql.printStackTrace();
+        }
+    }
+
+    public void moveToDescription(Cupon cupon){
+
+        Bundle datos = new Bundle();
+        datos.putInt("id_cupon", cupon.getId_cupon());
+        datos.putInt("id_userD", id_usuario);
+        datos.putString("nombre_cupon", cupon.getNombre_cupon());
+        datos.putString("descripcion_cupon", cupon.getDescripcion_cupon());
+        datos.putDouble("precio_cupon", cupon.getPrecio());
+        datos.putString("horario_cupon", cupon.getHorario_cupon());
+        datos.putInt("disponible", cupon.getDisponible());
+        datos.putString("nombre_restaurante", cupon.getRestaurante().getNombre_restaurante());
+        datos.putString("direccion", cupon.getRestaurante().getDireccion().getCalle());
+
+        Fragment detalleFragment = new DetalleCuponFragment();
+        detalleFragment.setArguments(datos);
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.content, detalleFragment);
+        ft.addToBackStack(null);
+
+        ft.commit();
     }
 }

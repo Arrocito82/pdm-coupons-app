@@ -21,4 +21,5 @@ public class Control {
     public void cerrar() throws SQLiteException{
         dbHelper.close();
     }
+
 }
