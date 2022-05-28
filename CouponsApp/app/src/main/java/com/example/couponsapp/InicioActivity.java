@@ -25,6 +25,7 @@ import com.example.couponsapp.vistas.CanjearCuponFragment;
 import com.example.couponsapp.vistas.GestionarCuponFragment;
 import com.example.couponsapp.vistas.HomeFragment;
 import com.example.couponsapp.vistas.GestionarUsuarioFragment;
+import com.example.couponsapp.vistas.MisCuponesFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -48,6 +49,7 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
 
     UsuarioControl usuarioControl = new UsuarioControl(this);
     Usuario usuario;
+    int rol_usuario, id_usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +72,10 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
         if (cuenta != null) {
             String nombreUser = cuenta.getDisplayName();
             String emailUser = cuenta.getEmail();
+            int indexUser = cuenta.getEmail().indexOf('@');
+            String userString = cuenta.getEmail().substring(0, indexUser);
 
             if(usuarioControl.userExist(cuenta.getGivenName(), cuenta.getEmail()) == 0){
-
-                int indexUser = cuenta.getEmail().indexOf('@');
-                String userString = cuenta.getEmail().substring(0, indexUser);
 
                 usuarioControl.insertUsuario(new Usuario(
                         0, //no tiene relevancia para insert
@@ -89,10 +90,12 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                         1
                 ));
             }
-
+            usuario = usuarioControl.traerUsuario(userString, "bixxortnnuis34");
             Uri userPhoto = cuenta.getPhotoUrl();
             nombre.setText(nombreUser);
             email.setText(emailUser);
+            rol_usuario = usuario.getId_rol();
+            id_usuario = usuario.getId_usuario();
             Glide.with(this).load(String.valueOf(userPhoto)).into(foto);
         }
 
@@ -102,6 +105,8 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             usuario = usuarioControl.traerUsuario(user, password);
             nombre.setText(usuario.getNombre() + " " + usuario.getApellido());
             email.setText(usuario.getEmail());
+            rol_usuario = usuario.getId_rol();
+            id_usuario = usuario.getId_usuario();
         }
 
         //Inicializar en la opcion home
@@ -116,7 +121,33 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
         //Seleccion de opcion
         navigationView.setNavigationItemSelectedListener(this);
 
+        MenuItem opcionAdmin = navigationView.getMenu().findItem(R.id.nav_gestion_usuario);
+        MenuItem opcionEncargado = navigationView.getMenu().findItem(R.id.nav_gestion_cupon);
+        MenuItem opcionCliente = navigationView.getMenu().findItem(R.id.nav_canjear_cupon);
+        MenuItem opcionClienteListCupones = navigationView.getMenu().findItem(R.id.nav_mis_cupones);
+
+
         //Esconder opciones
+        switch (rol_usuario){
+            case 1:
+                opcionAdmin.setVisible(true);
+                opcionEncargado.setVisible(false);
+                opcionCliente.setVisible(false);
+                opcionClienteListCupones.setVisible(false);
+                break;
+            case 2:
+                opcionEncargado.setVisible(true);
+                opcionAdmin.setVisible(false);
+                opcionCliente.setVisible(false);
+                opcionClienteListCupones.setVisible(false);
+                break;
+            case 3:
+                opcionAdmin.setVisible(false);
+                opcionEncargado.setVisible(false);
+                opcionCliente.setVisible(true);
+                opcionClienteListCupones.setVisible(true);
+                break;
+        }
     }
 
     @Override
@@ -141,15 +172,23 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
         switch (item.getItemId()) {
             case R.id.nav_gestion_cupon:
                 replaceFragment(new GestionarCuponFragment());
+                setTitle("Gestionar cupon");
                 break;
             case R.id.nav_home:
                 replaceFragment(new HomeFragment());
+                setTitle("Home");
                 break;
             case R.id.nav_gestion_usuario:
                 replaceFragment(new GestionarUsuarioFragment());
+                setTitle("Gestionar usuario");
                 break;
             case R.id.nav_canjear_cupon:
                 replaceFragment(new CanjearCuponFragment());
+                setTitle("Cupones");
+                break;
+            case R.id.nav_mis_cupones:
+                replaceFragment(new MisCuponesFragment());
+                setTitle("Mis cupones");
                 break;
             case R.id.nav_cerrar_sesion:
                 cerrarSesion();
@@ -160,6 +199,9 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
     }
 
     private void replaceFragment(Fragment fragment) {
+        Bundle data = new Bundle();
+        data.putInt("id_user", id_usuario);
+        fragment.setArguments(data);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.content, fragment);

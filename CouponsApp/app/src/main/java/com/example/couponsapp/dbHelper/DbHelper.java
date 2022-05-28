@@ -39,6 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "CODIGO_CUPON VARCHAR(5) NOT NULL UNIQUE, \n" +
                 "NOMBRE_CUPON VARCHAR(35) NOT NULL, \n" +
                 "DESCRIPCION_CUPON VARCHAR(50) NOT NULL, \n" +
+                "PRECIO_CUPON DECIMAL(5,2) NOT NULL," +
                 "HORARIO_CUPON VARCHAR(35) NOT NULL, \n" +
                 "DISPONIBLE INTEGER NOT NULL," +
                 "UNIQUE(ID_CUPON, ID_RESTAURANTE, ID_TIPO))");

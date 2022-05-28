@@ -9,14 +9,22 @@
             android:title="Inicio" />
 
         <item
-            android:id="@+id/nav_camara"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Cámara" />
+            android:id="@+id/nav_gestion_cupon"
+            android:icon="@drawable/ic_note_add_foreground"
+            android:title="Gestionar cupón" />
 
         <item
-            android:id="@+id/nav_mapa"
-            android:icon="@drawable/ic_baseline_map"
-            android:title="Mapa" />
+            android:id="@+id/nav_gestion_usuario"
+            android:icon="@drawable/ic_group_foreground"
+            android:title="Gestionar usuario" />
+        <item
+            android:id="@+id/nav_canjear_cupon"
+            android:icon="@drawable/ic_menu_book_foreground"
+            android:title="Cupones" />
+        <item
+            android:id="@+id/nav_mis_cupones"
+            android:icon="@drawable/ic_restaurant_menu_foreground"
+            android:title="Mis cupones" />
     </group>
 
     <item
