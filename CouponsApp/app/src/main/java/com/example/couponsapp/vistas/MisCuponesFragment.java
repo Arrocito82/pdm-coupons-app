@@ -3,14 +3,21 @@ package com.example.couponsapp.vistas;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.ListAdapterMisCupones;
 import com.example.couponsapp.controladores.RegistrarCuponControl;
+import com.example.couponsapp.modelos.Cupon;
 import com.example.couponsapp.modelos.RegistrarCupon;
 
 import java.util.ArrayList;
@@ -47,7 +54,7 @@ public class MisCuponesFragment extends Fragment {
             ListAdapterMisCupones listAdapterCat = new ListAdapterMisCupones(lis, view.getContext(), new ListAdapterMisCupones.OnItemClickListener() {
                 @Override
                 public void onItemClick(RegistrarCupon registrarCupon) {
-
+                    moveToDescription(registrarCupon);
                 }
             });
             recyclerView = view.findViewById(R.id.recycleMisCupones);
@@ -58,5 +65,29 @@ public class MisCuponesFragment extends Fragment {
         catch (SQLiteException sql){
             sql.printStackTrace();
         }
+    }
+
+    public void moveToDescription(RegistrarCupon registrarCupon){
+
+        Bundle datos = new Bundle();
+        datos.putInt("idCupon", registrarCupon.getCupon().getId_cupon());
+        datos.putInt("idUserD", id_usuario);
+        datos.putString("cCupon", registrarCupon.getCupon().getCodigo_cupon());
+        datos.putString("nCupon", registrarCupon.getCupon().getNombre_cupon());
+        datos.putString("dCupon", registrarCupon.getCupon().getDescripcion_cupon());
+        datos.putDouble("pCupon", registrarCupon.getCupon().getPrecio());
+        datos.putString("hCupon", registrarCupon.getCupon().getHorario_cupon());
+        datos.putString("nRes", registrarCupon.getCupon().getRestaurante().getNombre_restaurante());
+        datos.putString("dRes", registrarCupon.getCupon().getRestaurante().getDireccion().getCalle());
+
+        Fragment miCuponFragment = new MiCuponFragment();
+        miCuponFragment.setArguments(datos);
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.content, miCuponFragment);
+        ft.addToBackStack(null);
+
+        ft.commit();
     }
 }

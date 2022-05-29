@@ -75,7 +75,7 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             int indexUser = cuenta.getEmail().indexOf('@');
             String userString = cuenta.getEmail().substring(0, indexUser);
 
-            if(usuarioControl.userExist(cuenta.getGivenName(), cuenta.getEmail()) == 0){
+            if(usuarioControl.userExist(userString, cuenta.getEmail()) == 0){
 
                 usuarioControl.insertUsuario(new Usuario(
                         0, //no tiene relevancia para insert
