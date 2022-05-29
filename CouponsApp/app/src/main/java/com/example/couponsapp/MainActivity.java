@@ -81,9 +81,6 @@ public class MainActivity extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this,gso);
         GoogleSignInAccount cuenta = GoogleSignIn.getLastSignedInAccount(this);
-        if(cuenta!=null){
-            navigateToInicioActivity();
-        }
 
         //iniciar sesión sin google
         loginbtn.setOnClickListener(new View.OnClickListener() {
@@ -116,15 +113,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
     void inicioSesion(){
+        gsc.signOut();
         Intent inicioSesionIntent = gsc.getSignInIntent();
         startActivityForResult(inicioSesionIntent, 1000);
-    }
-
-    void iniciarSesionNoGoogle(){
-
     }
 
     @Override

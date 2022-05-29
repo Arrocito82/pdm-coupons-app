@@ -105,7 +105,7 @@ public class UsuarioControl extends Control {
         this.abrir();
         Usuario usuario;
         String[] args = {username, password};
-        Cursor res = db.rawQuery("SELECT * FROM USUARIO WHERE USERNAME = ? OR PASSWORD = ?", args);
+        Cursor res = db.rawQuery("SELECT * FROM USUARIO WHERE USERNAME = ? AND PASSWORD = ?", args);
         if (res.moveToFirst()){
             usuario = new Usuario(
                     res.getInt(0),
