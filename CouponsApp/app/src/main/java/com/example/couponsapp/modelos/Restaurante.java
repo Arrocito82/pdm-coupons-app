@@ -14,6 +14,10 @@ public class Restaurante {
         this.direccion = direccion;
     }
 
+    public Restaurante(int id_restaurante) {
+        this.id_restaurante = id_restaurante;
+    }
+
     public int getId_restaurante() {
         return id_restaurante;
     }

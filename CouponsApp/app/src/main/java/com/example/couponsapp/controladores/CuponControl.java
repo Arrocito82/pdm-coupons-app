@@ -62,17 +62,14 @@ public class CuponControl extends Control {
     public ArrayList<Cupon> traerCupones(String tipo){
         this.abrir();
         ArrayList<Cupon> list = new ArrayList<>();
+        String[] args = {"%"+tipo+"%"};
         Cupon cupon;
         Direccion direccion;
         Restaurante restaurante;
         TipoCupon tipoCupon;
         Cursor result;
-        if (tipo.equals("")){
-            result = db.rawQuery("SELECT CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.CALLE, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION", null);
-        }
-        else{
-            result = db.rawQuery("SELECT CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.CALLE, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION AND TIPOCUPON.NOMBRE_TIPO = ?", new String[]{tipo});
-        }
+        result = db.rawQuery("SELECT CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.CALLE, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION AND TIPOCUPON.NOMBRE_TIPO LIKE ?", args);
+
 
         if(result.moveToFirst()){
             do {
@@ -102,5 +99,40 @@ public class CuponControl extends Control {
         return list;
     }
 
-
+    public ArrayList<Cupon> all(){
+        this.abrir();
+        ArrayList<Cupon> list = new ArrayList<>();
+        Cupon cupon;
+        Direccion direccion;
+        Restaurante restaurante;
+        TipoCupon tipoCupon;
+        Cursor result;
+        result = db.rawQuery("SELECT CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.CALLE, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION", null);
+        if(result.moveToFirst()){
+            do {
+                direccion = new Direccion();
+                direccion.setCalle(result.getString(6));
+                restaurante = new Restaurante();
+                restaurante.setNombre_restaurante(result.getString(5));
+                restaurante.setDireccion(direccion);
+                tipoCupon = new TipoCupon();
+                tipoCupon.setNombre_tipo(result.getString(4));
+                cupon = new Cupon(
+                        result.getInt(0),
+                        restaurante,
+                        tipoCupon,
+                        result.getString(3),
+                        result.getString(1),
+                        result.getString(2),
+                        result.getDouble(9),
+                        result.getString(7),
+                        result.getInt(8)
+                );
+                list.add(cupon);
+            }while (result.moveToNext());
+        }
+        result.close();
+        this.cerrar();
+        return list;
+    }
 }

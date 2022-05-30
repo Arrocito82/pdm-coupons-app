@@ -25,9 +25,9 @@ public class TipoCuponControl extends Control {
         return id_ret;
     }
 
-    public List<TipoCupon> trarTipoCupones(){
+    public ArrayList<TipoCupon> trarTipoCupones(){
         this.abrir();
-        List<TipoCupon> list = new ArrayList<>();
+        ArrayList<TipoCupon> list = new ArrayList<>();
         TipoCupon tipoCupon;
         Cursor result = db.rawQuery("SELECT * FROM TIPOCUPON", null);
         if(result.moveToFirst()){
