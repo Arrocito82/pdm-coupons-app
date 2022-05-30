@@ -3,6 +3,8 @@ package com.example.couponsapp.controladores;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.util.Log;
 
 import com.example.couponsapp.dbHelper.Control;
 import com.example.couponsapp.modelos.Usuario;
@@ -155,5 +157,33 @@ public class UsuarioControl extends Control {
         }
         res.close();
         return cant;
+    }
+
+    public ArrayList<Usuario> readMany(String apellidos){
+        String []args={"%"+apellidos+"%"};
+        String []columns = {"ID_USUARIO", "ID_ROL", "ID_RESTAURANTE", "USERNAME", "PASSWORD","EMAIL","NOMBRE","APELLIDO","TELEFONO","GOOGLE_USUARIO"};
+        ArrayList <Usuario> usuarios=new ArrayList<>();
+        this.abrir();
+        Cursor results=db.query("USUARIO",columns,"APELLIDO LIKE ?",args,null,null,null);
+
+        try{
+            while(results.moveToNext()){
+                usuarios.add(new Usuario(
+                        results.getInt(0),
+                        results.getInt(1),
+                        results.getInt(2),
+                        results.getString(3),
+                        results.getString(4),
+                        results.getString(5),
+                        results.getString(6),
+                        results.getString(7),
+                        results.getString(8),
+                        results.getInt(9)));
+            }
+        }catch (SQLException e){
+            Log.e("Error",e.getMessage());
+        }
+        this.cerrar();
+        return usuarios;
     }
 }

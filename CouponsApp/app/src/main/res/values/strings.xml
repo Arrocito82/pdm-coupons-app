@@ -15,4 +15,16 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="btn_nuevo_crud">Agregar</string>
+    <string name="btnBuscar">Buscar</string>
+    <string-array name="crud_array">
+        <item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
+    <string name="dialog_crear">Nuevo</string>
+    <string name="guardar_usuario_configuracion">Guardar</string>
+    <string name="guardado">Guardado!</string>
+    <string name="dialog_editar">Editar</string>
+    <string name="eliminado">Eliminado!</string>
+    <string name="no_eliminado">No se puede eliminar</string>
 </resources>
