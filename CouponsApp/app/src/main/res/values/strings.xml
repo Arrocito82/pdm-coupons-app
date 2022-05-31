@@ -27,4 +27,6 @@
     <string name="dialog_editar">Editar</string>
     <string name="eliminado">Eliminado!</string>
     <string name="no_eliminado">No se puede eliminar</string>
+    <string name="text_bienvenida">Bienvenid@</string>
+    <string name="text_informacion">Aplicación para la generación de cupones para restaurantes, validos con un tiempo limitado definido, canjeados por medio de  codigos QR</string>
 </resources>

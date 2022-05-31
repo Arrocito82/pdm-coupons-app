@@ -17,9 +17,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.couponsapp.controladores.UsuarioControl;
+import com.example.couponsapp.email.Message;
 import com.example.couponsapp.modelos.Usuario;
 import com.example.couponsapp.vistas.CanjearCuponFragment;
 import com.example.couponsapp.vistas.GestionarCuponFragment;
@@ -33,6 +35,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.example.couponsapp.email.SendEmail;
+import com.example.couponsapp.email.Config;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 
 public class InicioActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -89,6 +97,22 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                         "",
                         1
                 ));
+
+                //Enviar correo electronico de bienvenida
+                String mEmail = cuenta.getEmail();
+                String mSubject = "Registro";
+                MimeMultipart mContent = new MimeMultipart();
+                MimeBodyPart mbp1= new MimeBodyPart();
+                Message msg = new Message();
+                String htmlText = msg.mensaje(cuenta.getDisplayName());
+                try {
+                    mbp1.setContent(htmlText,"text/html");
+                    mContent.addBodyPart(mbp1);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+                SendEmail javaMailAPI = new SendEmail(this, mEmail, mSubject, mContent);
+                javaMailAPI.execute();
             }
             usuario = usuarioControl.traerUsuario(userString, "bixxortnnuis34");
             Uri userPhoto = cuenta.getPhotoUrl();
