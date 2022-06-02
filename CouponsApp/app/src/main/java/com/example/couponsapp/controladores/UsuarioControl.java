@@ -129,6 +129,32 @@ public class UsuarioControl extends Control {
         return usuario;
     }
 
+    public Usuario traerUsuarioById (int id_usuario){
+        this.abrir();
+        Usuario usuario;
+        String[] args = {String.valueOf(id_usuario)};
+        Cursor res = db.rawQuery("SELECT * FROM USUARIO WHERE ID_USUARIO = ? ", args);
+        if (res.moveToFirst()){
+            usuario = new Usuario(
+                    res.getInt(0),
+                    res.getInt(1),
+                    res.getInt(2),
+                    res.getString(3),
+                    res.getString(4),
+                    res.getString(5),
+                    res.getString(6),
+                    res.getString(7),
+                    res.getString(8),
+                    res.getInt(9)
+            );
+        }
+        else{
+            usuario = new Usuario();
+        }
+        res.close();
+        return usuario;
+    }
+
     public int validarUsuario (String username, String password){
         this.abrir();
         int cant;
