@@ -40,7 +40,7 @@ public class MiCuponFragment extends Fragment {
 
     TextView nCupon, dCupon, hCupon, pCupon, nRest;
     Button btnPDF, btnTTP;
-    String cCupon, dRes, nRests, name, desc, horario, precio;
+    String cCupon, dRes, nRests, name, desc, horario, precio, uName, uEmail;
     int idUsuario, idCupon;
 
     Bitmap bmp, scaleBitmap;
@@ -84,10 +84,12 @@ public class MiCuponFragment extends Fragment {
             //ids usuario y cupon
             idCupon = data.getInt("idCupon");
             idUsuario = data.getInt("idUserD");
+            uName = data.getString("nameUser");
+            uEmail = data.getString("userEmail");
         }
 
         try {
-            String content = "Codigo: "+cCupon+"\nPromocion: "+name+"\nRestaurante: "+nRests+"\nDescripcion: "+desc+"\nHorario: "+horario+"\nPrecio: "+precio;
+            String content = "Cliente: "+uName+"\nEmail: "+uEmail+"\nCodigo: "+cCupon+"\nPromocion: "+name+"\nRestaurante: "+nRests+"\nDescripcion: "+desc+"\nHorario: "+horario+"\nPrecio: "+precio;
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bmp = barcodeEncoder.encodeBitmap(content, BarcodeFormat.QR_CODE, 450, 450);
             scaleBitmap = Bitmap.createScaledBitmap(bmp, 210, 210, false);
