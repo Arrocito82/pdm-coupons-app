@@ -25,7 +25,9 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS RESTAURANTE(" +
                 "ID_RESTAURANTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "ID_DIRECCION INTEGER NOT NULL, \n" +
-                "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL, \n" +
+                "ID_DIRECCION INTEGER NOT NULL, \n" +
+                "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL unique, \n" +
+                "FOTO_RESTAURANTE VARCHAR(45)     , \n" +
                 "UNIQUE(ID_RESTAURANTE, ID_DIRECCION))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS TIPOCUPON(" +
@@ -61,7 +63,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS USUARIO(" +
                 "ID_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "ID_ROL INTEGER NOT NULL, \n" +
-                "ID_RESTAURANTE, \n" +
+                "ID_RESTAURANTE INTEGER, \n" +
                 "USERNAME VARCHAR(40) NOT NULL UNIQUE, \n" +
                 "PASSWORD VARCHAR(40) NOT NULL, \n" +
                 "EMAIL VARCHAR(100) NOT NULL UNIQUE, \n" +
@@ -69,6 +71,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "APELLIDO VARCHAR(40) NOT NULL, \n" +
                 "TELEFONO VARCHAR(8) NOT NULL, \n" +
                 "GOOGLE_USUARIO INTEGER NOT NULL, \n" +
+                "FOTO_PERFIL VARCHAR(45)     , \n" +
                 "UNIQUE(ID_USUARIO, ID_ROL))");
 
 

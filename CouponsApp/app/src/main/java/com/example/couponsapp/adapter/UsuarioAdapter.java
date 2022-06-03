@@ -3,6 +3,7 @@ package com.example.couponsapp.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.modelos.Usuario;
 import com.example.couponsapp.R;
+import com.example.couponsapp.vistas.UsuarioFragment;
 
 import java.util.ArrayList;
 
@@ -25,8 +31,6 @@ public class UsuarioAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     ArrayList<Usuario> items;
 
-    //variables del custom dialog
-    EditText username,email, nombre, apellido, password, telefono, rol;
 
     public UsuarioAdapter(Context context ) {
         this.control = new UsuarioControl(context);
@@ -35,97 +39,27 @@ public class UsuarioAdapter extends BaseAdapter {
         this.layoutInflater=LayoutInflater.from(context);
     }
 
-    public void crear() {
-        /*Usuario targetItem=new Usuario();
-        //creando el view del dialogo
-        View customDialog=layoutInflater.inflate(R.layout.dialog_usuario, null);
-
-        //construccion del dialogo
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(customDialog)
-                .setTitle(R.string.dialog_crear)
-                .setPositiveButton(R.string.guardar_usuario_configuracion, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Dialog dialogView = (Dialog) dialog;
-                        //nuevos valores
-                        username=dialogView.findViewById(R.id.edittext_codigo_especialidad);
-                        email=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        nombre=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        apellido=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        password=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        telefono=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        rol=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-
-                        targetItem.setUsername(username.getText().toString());
-                        targetItem.setEmail(email.getText().toString());
-                        targetItem.setNombre(nombre.getText().toString());
-                        targetItem.setApellido(apellido.getText().toString());
-                        targetItem.setPassword(password.getText().toString());
-                        targetItem.setTelefono(telefono.getText().toString());
-                        targetItem.setId_rol(Integer.getInteger(rol.getText()));
-                        int result=(int)control.insertUsuario(targetItem);
-                        targetItem.setId_usuario(result);
-                        if (result>0){
-                            addItem(targetItem);
-                            notifyDataSetChanged();
-                            Toast.makeText(context,R.string.guardado,Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-        builder.create();
-        builder.show();*/
-
+    public void crear(View view,FragmentManager fragmentManager) {
+        Bundle args=new Bundle();
+        args.putBoolean("is_new",true);
+        args.putBoolean("is_admin",true);
+        Fragment fragment=new UsuarioFragment();
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content, fragment);
+        fragmentTransaction.commit();
     }
 
-    public  void editar(int position){
-        /*item a modificar
-        Usuario targetItem=getItem(position);
-
-        //creando el view del dialogo
-        View customDialog=layoutInflater.inflate(R.layout.dialog_usuario, null);
-
-        //valores por defecto
-        username=customDialog.findViewById(R.id.edittext_codigo_especialidad);
-        email=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-        nombre=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-        apellido=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-        password=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-        telefono=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-        rol=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-
-        //construccion del dialogo
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(customDialog)
-                .setTitle(R.string.dialog_editar)
-                .setPositiveButton(R.string.guardar_usuario_configuracion, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Dialog dialogView = (Dialog) dialog;
-                        //nuevos valores
-                        codigo=dialogView.findViewById(R.id.edittext_codigo_especialidad);
-                        nombre=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        nuevoCodigo=codigo.getText().toString();
-                        nuevoNombre=nombre.getText().toString();
-                        if (targetItem.getCodigo_especialidad()!=nuevoCodigo){
-                            targetItem.setCodigo_especialidad(nuevoCodigo);
-                        }
-                        if(targetItem.getNombre_especialidad()!=nuevoNombre){
-                            targetItem.setNombre_especialidad(nuevoNombre);
-                        }
-
-                        int result=control.update(targetItem);
-                        boolean isUpdated=result>0;
-                        if (isUpdated){
-                            items.set(position,targetItem);
-                            notifyDataSetChanged();
-                            Toast.makeText(context,R.string.guardado,Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-        builder.create();
-        builder.show();*/
-
+    public  void editar(View view,FragmentManager fragmentManager,Usuario usuarioTarget){
+        Bundle args=new Bundle();
+        args.putBoolean("is_new",false);
+        args.putBoolean("is_admin",true);
+        args.putInt("id_usuario",usuarioTarget.getId_usuario());
+        Fragment fragment=new UsuarioFragment();
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content, fragment);
+        fragmentTransaction.commit();
     }
     public void eliminar(int position){
 
