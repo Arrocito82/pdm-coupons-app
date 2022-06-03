@@ -1,6 +1,5 @@
 package com.example.couponsapp.vistas;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -12,13 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.ListAdapterCupon;
 import com.example.couponsapp.controladores.CuponControl;
-import com.example.couponsapp.controladores.TipoCuponControl;
 import com.example.couponsapp.modelos.Cupon;
 import java.util.ArrayList;
 
@@ -118,7 +115,7 @@ public class CanjearCuponFragment extends Fragment {
         datos.putString("horario_cupon", cupon.getHorario_cupon());
         datos.putInt("disponible", cupon.getDisponible());
         datos.putString("nombre_restaurante", cupon.getRestaurante().getNombre_restaurante());
-        datos.putString("direccion", cupon.getRestaurante().getDireccion().getCalle());
+        datos.putString("direccion", cupon.getRestaurante().getDireccion());
 
         Fragment detalleFragment = new DetalleCuponFragment();
         detalleFragment.setArguments(datos);

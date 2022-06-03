@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.couponsapp.controladores.CuponControl;
-import com.example.couponsapp.controladores.DireccionControl;
 import com.example.couponsapp.controladores.PermisoControl;
 import com.example.couponsapp.controladores.RestauranteControl;
 import com.example.couponsapp.controladores.RolControl;
@@ -20,7 +19,6 @@ import com.example.couponsapp.controladores.TipoCuponControl;
 import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.dbHelper.Control;
 import com.example.couponsapp.modelos.Cupon;
-import com.example.couponsapp.modelos.Direccion;
 import com.example.couponsapp.modelos.Permiso;
 import com.example.couponsapp.modelos.Restaurante;
 import com.example.couponsapp.modelos.Rol;
@@ -42,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     RolPermisoControl rolPermisoControl = new RolPermisoControl(this);
     UsuarioControl usuarioControl = new UsuarioControl(this);
     TipoCuponControl tipoCuponControl = new TipoCuponControl(this);
-    DireccionControl direccionControl = new DireccionControl(this);
     RestauranteControl restauranteControl = new RestauranteControl(this);
     CuponControl cuponControl = new CuponControl(this);
 
@@ -163,13 +160,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void llenarBD(){
-        //Direccion
-        long dir1 = direccionControl.insertDireccion(new Direccion(1, "San Salvador", "Los Próceres", ""));
-        Direccion direccion = new Direccion(1, "San Salvador", "Los Próceres", "");
 
         //Restaurante
-        long res1 = restauranteControl.insertRestaurante(new Restaurante(1, "Pizza Hut", direccion));
-        Restaurante restaurante = new Restaurante(1, "Pizza Hut", direccion);
+        Restaurante restaurante = new Restaurante(1, "Pizza Hut", "direccion");
+        long res1 = restauranteControl.insertRestaurante(restaurante);
+        restaurante.setId_restaurante((int)res1);
+
 
         //TipoCupon
         long tipoDesayuno = tipoCuponControl.insertTipoCupon(new TipoCupon(1, "Desayuno"));

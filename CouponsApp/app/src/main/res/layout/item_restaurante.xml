@@ -6,9 +6,6 @@
     android:orientation="vertical"
     android:paddingHorizontal="25dp"
     tools:context=".adapter.RestauranteAdapter">
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
