@@ -18,13 +18,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS RESTAURANTE(" +
                 "ID_RESTAURANTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "DIRECCION TEXT not null, \n" +
-                "TELEFONO_RESTAURANTE VARCHAR(8), \n"+
-                "LAT INTEGER , \n" +
-                "LONG INTEGER , \n" +
                 "ID_GOOGLE_MAPS text, \n" +
                 "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL unique, \n" +
-                "FOTO_RESTAURANTE text     , \n" +
+                "DIRECCION TEXT not null, \n" +
+                "TELEFONO_RESTAURANTE VARCHAR(14), \n"+
+                "LAT DECIMAL(10,7) , \n" +
+                "LONG DECIMAL(10,7), \n" +
+                "URL_IMAGEN   text, \n" +
                 "UNIQUE(ID_RESTAURANTE))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS TIPOCUPON(" +

@@ -1,6 +1,7 @@
 package com.example.couponsapp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,16 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.couponsapp.controladores.RestauranteControl;
 import com.example.couponsapp.modelos.Restaurante;
 import com.example.couponsapp.R;
+import com.example.couponsapp.modelos.Usuario;
+import com.example.couponsapp.vistas.RestauranteFragment;
+import com.example.couponsapp.vistas.UsuarioFragment;
 
 import java.util.ArrayList;
 
@@ -30,87 +38,27 @@ public class RestauranteAdapter extends BaseAdapter {
         this.layoutInflater=LayoutInflater.from(context);
     }
 
-    public void crear() {
-        /*Municipio targetItem=new Municipio();
-        //creando el view del dialogo
-        View customDialog=layoutInflater.inflate(R.layout.dialog_especialidad, null);
-
-        //construccion del dialogo
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(customDialog)
-                .setTitle(R.string.dialog_crear)
-                .setPositiveButton(R.string.guardar_usuario_configuracion, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        String nuevoCodigo,nuevoNombre;
-                        Dialog dialogView = (Dialog) dialog;
-                        //nuevos valores
-                        codigo=dialogView.findViewById(R.id.edittext_codigo_especialidad);
-                        nombre=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        nuevoCodigo=codigo.getText().toString();
-                        nuevoNombre=nombre.getText().toString();
-                        targetItem.setCodigo_municipio(nuevoCodigo);
-                        targetItem.setNombre_municipio(nuevoNombre);
-                        int result=(int)control.insert(targetItem);
-                        targetItem.setId_municipio(result);
-                        if (result>0){
-                            addItem(targetItem);
-                            notifyDataSetChanged();
-                            Toast.makeText(context,R.string.guardado,Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-        builder.create();
-        builder.show();*/
-
+    public void crear(View view,FragmentManager fragmentManager) {
+        Bundle args=new Bundle();
+        args.putBoolean("is_new",true);
+        args.putBoolean("is_admin",true);
+        Fragment fragment=new RestauranteFragment();
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content, fragment);
+        fragmentTransaction.commit();
     }
 
-    public  void editar(int position){
-        //item a modificar
-        /*Municipio targetItem=getItem(position);
-
-        //creando el view del dialogo
-        View customDialog=layoutInflater.inflate(R.layout.dialog_especialidad, null);
-
-        //valores por defecto
-        codigo=customDialog.findViewById(R.id.edittext_codigo_especialidad);
-        nombre=customDialog.findViewById(R.id.edittext_nombre_especialidad);
-        codigo.setText(targetItem.getCodigo_municipio());
-        nombre.setText(targetItem.getNombre_municipio());
-
-        //construccion del dialogo
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(customDialog)
-                .setTitle(R.string.dialog_editar)
-                .setPositiveButton(R.string.guardar_usuario_configuracion, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        String nuevoCodigo,nuevoNombre;
-                        Dialog dialogView = (Dialog) dialog;
-                        //nuevos valores
-                        codigo=dialogView.findViewById(R.id.edittext_codigo_especialidad);
-                        nombre=dialogView.findViewById(R.id.edittext_nombre_especialidad);
-                        nuevoCodigo=codigo.getText().toString();
-                        nuevoNombre=nombre.getText().toString();
-                        if (targetItem.getCodigo_municipio()!=nuevoCodigo){
-                            targetItem.setCodigo_municipio(nuevoCodigo);
-                        }
-                        if(targetItem.getNombre_municipio()!=nuevoNombre){
-                            targetItem.setNombre_municipio(nuevoNombre);
-                        }
-
-                        int result=control.update(targetItem);
-                        boolean isUpdated=result>0;
-                        if (isUpdated){
-                            replaceItem(position,targetItem);
-                            notifyDataSetChanged();
-                            Toast.makeText(context,R.string.guardado,Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-        builder.create();
-        builder.show();*/
-
+    public  void editar(View view, FragmentManager fragmentManager, Restaurante restaurante){
+        Bundle args=new Bundle();
+        args.putBoolean("is_new",false);
+        args.putBoolean("is_admin",true);
+        args.putInt("id_restaurante",restaurante.getId_restaurante());
+        Fragment fragment=new RestauranteFragment();
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content, fragment);
+        fragmentTransaction.commit();
     }
     public void eliminar(int position){
 
@@ -127,8 +75,8 @@ public class RestauranteAdapter extends BaseAdapter {
         }*/
     }
     public void filtrar(String busqueda) {
-        /*items= control.listaMunicipios(busqueda);
-        notifyDataSetChanged();*/
+        items= control.filtrarRestaurante(busqueda);
+        notifyDataSetChanged();
 
     }
 
@@ -164,7 +112,8 @@ public class RestauranteAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View customView, ViewGroup parent) {
-        TextView nombre,codigo;
+        TextView nombre,telefono,direccion,codigo;
+        Restaurante restaurante=items.get(position);
         if(customView == null){
             customView = LayoutInflater.from(context).inflate(R.layout.item_restaurante,parent,false);
         }else{
@@ -172,8 +121,12 @@ public class RestauranteAdapter extends BaseAdapter {
         }
         nombre=customView.findViewById(R.id.nombre);
         codigo=customView.findViewById(R.id.codigo);
-        nombre.setText(items.get(position).getNombre_restaurante());
-        codigo.setText(String.valueOf(items.get(position).getId_restaurante()));
+        telefono=customView.findViewById(R.id.telefono);
+        direccion=customView.findViewById(R.id.direccion);
+        nombre.setText(restaurante.getNombre_restaurante());
+        telefono.setText(restaurante.getTelefono());
+        direccion.setText(restaurante.getDireccion());
+        codigo.setText(String.valueOf(restaurante.getId_restaurante()));
         return customView;
     }
 }

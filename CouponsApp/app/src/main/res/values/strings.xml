@@ -22,6 +22,10 @@
         <item>Editar</item>
         <item>Eliminar</item>
     </string-array>
+    <string-array name="restaurante_array">
+        <item>Editar</item>
+<!--        <item>Eliminar</item>-->
+    </string-array>
     <string name="dialog_crear">Nuevo</string>
     <string name="guardar_usuario_configuracion">Guardar</string>
     <string name="guardado">Guardado!</string>
@@ -46,13 +50,14 @@
     <string name="title_pefil_de_usuario">Perfil de Usuario</string>
     <string name="title_telefono">Telefono</string>
 
-    <string name="lbl_datos_restaurante">Datos del negocio.</string>
-    <string name="lbl_registrar_negocio">Registrar Negocio</string>
-    <string name="btn_buscar_negocio">Buscar Negocio</string>
-    <string name="hint_nombre_negocio">Nombre del negocio</string>
-    <string name="hint_dirección_negocio">Dirección del negocio</string>
+    <string name="lbl_datos_restaurante">Datos del Restaurante</string>
+    <string name="lbl_registrar_negocio">Registrar Restaurante</string>
+    <string name="btn_buscar_negocio">Buscar</string>
+    <string name="hint_nombre_negocio">Nombre</string>
+    <string name="hint_dirección_negocio">Dirección</string>
     <string name="hint_latitud">Latitud</string>
     <string name="hint_longitud">Longitud</string>
     <string name="hint_id_map">ID Google Maps</string>
-    <string name="hint_telefono_negocio">Telefono del negocio</string>
+    <string name="hint_telefono_negocio">Telefono</string>
+    <string name="guardar">Guardar</string>
 </resources>
