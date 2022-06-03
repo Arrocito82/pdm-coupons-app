@@ -30,6 +30,7 @@
     <string name="no_eliminado">No se puede eliminar</string>
     <string name="text_bienvenida">Bienvenid@</string>
     <string name="text_informacion">Aplicación para la generación de cupones para restaurantes, validos con un tiempo limitado definido, canjeados por medio de  codigos QR</string>
+
     <string name="title_username">Username</string>
     <string name="title_rol">Rol</string>
     <string name="title_email">Email</string>
@@ -44,4 +45,14 @@
     <string name="invalido_username">Datos no validos</string>
     <string name="title_pefil_de_usuario">Perfil de Usuario</string>
     <string name="title_telefono">Telefono</string>
+
+    <string name="lbl_datos_restaurante">Datos del negocio.</string>
+    <string name="lbl_registrar_negocio">Registrar Negocio</string>
+    <string name="btn_buscar_negocio">Buscar Negocio</string>
+    <string name="hint_nombre_negocio">Nombre del negocio</string>
+    <string name="hint_dirección_negocio">Dirección del negocio</string>
+    <string name="hint_latitud">Latitud</string>
+    <string name="hint_longitud">Longitud</string>
+    <string name="hint_id_map">ID Google Maps</string>
+    <string name="hint_telefono_negocio">Telefono del negocio</string>
 </resources>
