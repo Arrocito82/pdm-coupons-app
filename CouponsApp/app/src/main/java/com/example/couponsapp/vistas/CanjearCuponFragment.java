@@ -115,7 +115,7 @@ public class CanjearCuponFragment extends Fragment {
         datos.putString("horario_cupon", cupon.getHorario_cupon());
         datos.putInt("disponible", cupon.getDisponible());
         datos.putString("nombre_restaurante", cupon.getRestaurante().getNombre_restaurante());
-        datos.putString("direccion", cupon.getRestaurante().getDireccion().getUbicacion());
+        datos.putString("direccion", cupon.getRestaurante().getDireccion());
 
         Fragment detalleFragment = new DetalleCuponFragment();
         detalleFragment.setArguments(datos);

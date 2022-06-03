@@ -82,7 +82,7 @@ public class MisCuponesFragment extends Fragment {
         datos.putDouble("pCupon", registrarCupon.getCupon().getPrecio());
         datos.putString("hCupon", registrarCupon.getCupon().getHorario_cupon());
         datos.putString("nRes", registrarCupon.getCupon().getRestaurante().getNombre_restaurante());
-        datos.putString("dRes", registrarCupon.getCupon().getRestaurante().getDireccion().getUbicacion());
+        datos.putString("dRes", registrarCupon.getCupon().getRestaurante().getDireccion());
 
         Fragment miCuponFragment = new MiCuponFragment();
         miCuponFragment.setArguments(datos);

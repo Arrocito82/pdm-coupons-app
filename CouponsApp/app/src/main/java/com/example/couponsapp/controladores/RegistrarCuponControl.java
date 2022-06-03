@@ -6,7 +6,6 @@ import android.database.Cursor;
 
 import com.example.couponsapp.dbHelper.Control;
 import com.example.couponsapp.modelos.Cupon;
-import com.example.couponsapp.modelos.Direccion;
 import com.example.couponsapp.modelos.RegistrarCupon;
 import com.example.couponsapp.modelos.Restaurante;
 import com.example.couponsapp.modelos.TipoCupon;
@@ -35,20 +34,17 @@ public class RegistrarCuponControl extends Control {
         this.abrir();
         ArrayList<RegistrarCupon> list = new ArrayList<>();
         Cupon cupon;
-        Direccion direccion;
         Restaurante restaurante;
         TipoCupon tipoCupon;
         RegistrarCupon registrarCupon;
         Usuario usuario;
-        Cursor result = db.rawQuery("SELECT REGISTROCUPON.ID_REGISTRO, CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.CALLE, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON, REGISTROCUPON.FECHA_CANJEO FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION, REGISTROCUPON, USUARIO WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION AND CUPON.ID_CUPON = REGISTROCUPON.ID_CUPON AND USUARIO.ID_USUARIO = REGISTROCUPON.ID_USUARIO AND USUARIO.ID_USUARIO = ?", new String[]{String.valueOf(id_user)});
+        Cursor result = db.rawQuery("SELECT REGISTROCUPON.ID_REGISTRO, CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, RESTAURANTE.DIRECCION, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON, REGISTROCUPON.FECHA_CANJEO FROM CUPON, TIPOCUPON, RESTAURANTE, REGISTROCUPON, USUARIO WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO  AND CUPON.ID_CUPON = REGISTROCUPON.ID_CUPON AND USUARIO.ID_USUARIO = REGISTROCUPON.ID_USUARIO AND USUARIO.ID_USUARIO = ?", new String[]{String.valueOf(id_user)});
 
         if(result.moveToFirst()){
             do {
-                direccion = new Direccion();
-                direccion.setUbicacion(result.getString(7));
                 restaurante = new Restaurante();
                 restaurante.setNombre_restaurante(result.getString(6));
-                restaurante.setDireccion(direccion);
+                restaurante.setDireccion(result.getString(7));
                 tipoCupon = new TipoCupon();
                 tipoCupon.setNombre_tipo(result.getString(5));
                 cupon = new Cupon(

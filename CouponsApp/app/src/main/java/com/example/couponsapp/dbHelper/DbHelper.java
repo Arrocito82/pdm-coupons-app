@@ -16,13 +16,9 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS DIRECCION(" +
-                "ID_DIRECCION INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "UBICACION TEXT NOT NULL );");
-
         db.execSQL("CREATE TABLE IF NOT EXISTS RESTAURANTE(" +
                 "ID_RESTAURANTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "ID_DIRECCION INTEGER not null, \n" +
+                "DIRECCION TEXT not null, \n" +
                 "TELEFONO_RESTAURANTE VARCHAR(8), \n"+
                 "LAT INTEGER , \n" +
                 "LONG INTEGER , \n" +
@@ -86,17 +82,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
         /*              TRIGGERS              */
 
-        db.execSQL("CREATE TRIGGER FK_RESTAURANTE_DIRECCION BEFORE INSERT " +
-                "ON RESTAURANTE " +
-                "FOR EACH ROW " +
-                "BEGIN " +
-                "SELECT CASE " +
-                "WHEN ((SELECT ID_DIRECCION FROM DIRECCION WHERE ID_DIRECCION = NEW.ID_DIRECCION) IS NULL) " +
-                "THEN RAISE(ABORT, 'No existe la dirección!') " +
-                "END; " +
-                "END; ");
-
-
         db.execSQL("CREATE TRIGGER FK_CUPON_RESTAURANTE BEFORE INSERT " +
                 "ON CUPON " +
                 "FOR EACH ROW " +
@@ -120,7 +105,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS DIRECCION");
         db.execSQL("DROP TABLE IF EXISTS RESTAURANTE");
         db.execSQL("DROP TABLE IF EXISTS TIPOCUPON");
         db.execSQL("DROP TABLE IF EXISTS CUPON");

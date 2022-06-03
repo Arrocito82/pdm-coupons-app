@@ -3,12 +3,12 @@ package com.example.couponsapp.modelos;
 public class Restaurante {
     private int id_restaurante;
     private String nombre_restaurante;
-    private Direccion direccion;
+    private String direccion;
 
     public Restaurante() {
     }
 
-    public Restaurante(int id_restaurante, String nombre_restaurante, Direccion direccion) {
+    public Restaurante(int id_restaurante, String nombre_restaurante,String direccion) {
         this.id_restaurante = id_restaurante;
         this.nombre_restaurante = nombre_restaurante;
         this.direccion = direccion;
@@ -34,11 +34,11 @@ public class Restaurante {
         this.nombre_restaurante = nombre_restaurante;
     }
 
-    public Direccion getDireccion() {
+    public String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 }
