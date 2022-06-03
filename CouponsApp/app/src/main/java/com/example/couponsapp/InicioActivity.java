@@ -25,6 +25,7 @@ import com.example.couponsapp.email.Message;
 import com.example.couponsapp.modelos.Usuario;
 import com.example.couponsapp.vistas.CanjearCuponFragment;
 import com.example.couponsapp.vistas.GestionarCuponFragment;
+import com.example.couponsapp.vistas.GooglePlacesFragment;
 import com.example.couponsapp.vistas.HomeFragment;
 import com.example.couponsapp.vistas.GestionarUsuarioFragment;
 import com.example.couponsapp.vistas.MisCuponesFragment;
@@ -225,6 +226,10 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.nav_cerrar_sesion:
                 cerrarSesion();
+                break;
+            case R.id.nav_map:
+                replaceFragment(new GooglePlacesFragment());
+                setTitle("Mapa");
                 break;
         }
         setTitle(item.getTitle());
