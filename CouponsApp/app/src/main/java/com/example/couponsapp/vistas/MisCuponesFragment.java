@@ -17,8 +17,10 @@ import android.widget.Toast;
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.ListAdapterMisCupones;
 import com.example.couponsapp.controladores.RegistrarCuponControl;
+import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.modelos.Cupon;
 import com.example.couponsapp.modelos.RegistrarCupon;
+import com.example.couponsapp.modelos.Usuario;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class MisCuponesFragment extends Fragment {
     RecyclerView recyclerView;
 
     int id_usuario;
+    Usuario usuario;
     ArrayList<RegistrarCupon> misCuponesList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,9 +39,11 @@ public class MisCuponesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_mis_cupones, container, false);
 
         RegistrarCuponControl registrarCuponControl = new RegistrarCuponControl(root.getContext());
+        UsuarioControl usuarioControl = new UsuarioControl(root.getContext());
 
         id_usuario = data.getInt("id_user");
         try {
+            usuario = usuarioControl.traerUsuarioById(id_usuario);
             misCuponesList = registrarCuponControl.traerMisCupones(id_usuario);
             llenarLista(root, misCuponesList);
         }
@@ -72,6 +77,8 @@ public class MisCuponesFragment extends Fragment {
         Bundle datos = new Bundle();
         datos.putInt("idCupon", registrarCupon.getCupon().getId_cupon());
         datos.putInt("idUserD", id_usuario);
+        datos.putString("nameUser", usuario.getNombre());
+        datos.putString("userEmail", usuario.getEmail());
         datos.putString("cCupon", registrarCupon.getCupon().getCodigo_cupon());
         datos.putString("nCupon", registrarCupon.getCupon().getNombre_cupon());
         datos.putString("dCupon", registrarCupon.getCupon().getDescripcion_cupon());

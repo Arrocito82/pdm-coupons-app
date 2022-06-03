@@ -29,6 +29,7 @@ import com.example.couponsapp.vistas.GooglePlacesFragment;
 import com.example.couponsapp.vistas.HomeFragment;
 import com.example.couponsapp.vistas.GestionarUsuarioFragment;
 import com.example.couponsapp.vistas.MisCuponesFragment;
+import com.example.couponsapp.vistas.QRScannerFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -148,6 +149,7 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
 
         MenuItem opcionAdmin = navigationView.getMenu().findItem(R.id.nav_gestion_usuario);
         MenuItem opcionEncargado = navigationView.getMenu().findItem(R.id.nav_gestion_cupon);
+        MenuItem opcionEncargadoSanner = navigationView.getMenu().findItem(R.id.nav_scanner);
         MenuItem opcionCliente = navigationView.getMenu().findItem(R.id.nav_canjear_cupon);
         MenuItem opcionClienteListCupones = navigationView.getMenu().findItem(R.id.nav_mis_cupones);
 
@@ -157,11 +159,13 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             case 1:
                 opcionAdmin.setVisible(true);
                 opcionEncargado.setVisible(false);
+                opcionEncargadoSanner.setVisible(false);
                 opcionCliente.setVisible(false);
                 opcionClienteListCupones.setVisible(false);
                 break;
             case 2:
                 opcionEncargado.setVisible(true);
+                opcionEncargadoSanner.setVisible(true);
                 opcionAdmin.setVisible(false);
                 opcionCliente.setVisible(false);
                 opcionClienteListCupones.setVisible(false);
@@ -169,6 +173,7 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             case 3:
                 opcionAdmin.setVisible(false);
                 opcionEncargado.setVisible(false);
+                opcionEncargadoSanner.setVisible(false);
                 opcionCliente.setVisible(true);
                 opcionClienteListCupones.setVisible(true);
                 break;
@@ -198,6 +203,10 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_gestion_cupon:
                 replaceFragment(new GestionarCuponFragment());
                 setTitle("Gestionar cupon");
+                break;
+            case R.id.nav_scanner:
+                replaceFragment(new QRScannerFragment());
+                setTitle("Escanear cupon");
                 break;
             case R.id.nav_home:
                 replaceFragment(new HomeFragment());
