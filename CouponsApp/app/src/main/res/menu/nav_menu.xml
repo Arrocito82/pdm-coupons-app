@@ -30,9 +30,9 @@
             android:icon="@drawable/ic_restaurant_menu_foreground"
             android:title="Mis cupones" />
         <item
-            android:id="@+id/nav_map"
-            android:icon="@drawable/ic_restaurant_menu_foreground"
-            android:title="Mapa" />
+            android:id="@+id/nav_restaurante"
+            android:icon="@drawable/ic_baseline_fastfood_24"
+            android:title="Restaurantes" />
     </group>
 
     <item
