@@ -8,17 +8,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.ListAdapterMisCupones;
 import com.example.couponsapp.controladores.RegistrarCuponControl;
 import com.example.couponsapp.controladores.UsuarioControl;
-import com.example.couponsapp.modelos.Cupon;
 import com.example.couponsapp.modelos.RegistrarCupon;
 import com.example.couponsapp.modelos.Usuario;
 
@@ -85,7 +82,7 @@ public class MisCuponesFragment extends Fragment {
         datos.putDouble("pCupon", registrarCupon.getCupon().getPrecio());
         datos.putString("hCupon", registrarCupon.getCupon().getHorario_cupon());
         datos.putString("nRes", registrarCupon.getCupon().getRestaurante().getNombre_restaurante());
-        datos.putString("dRes", registrarCupon.getCupon().getRestaurante().getDireccion().getCalle());
+        datos.putString("dRes", registrarCupon.getCupon().getRestaurante().getDireccion().getUbicacion());
 
         Fragment miCuponFragment = new MiCuponFragment();
         miCuponFragment.setArguments(datos);

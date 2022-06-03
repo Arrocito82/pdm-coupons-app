@@ -18,17 +18,18 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS DIRECCION(" +
                 "ID_DIRECCION INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "MUNICIPIO VARCHAR(40) NOT NULL, \n" +
-                "CALLE VARCHAR(40) NOT NULL, \n" +
-                "NUMERO_LOCAL VARCHAR(7))");
+                "UBICACION TEXT NOT NULL );");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS RESTAURANTE(" +
                 "ID_RESTAURANTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "ID_DIRECCION INTEGER NOT NULL, \n" +
-                "ID_DIRECCION INTEGER NOT NULL, \n" +
+                "ID_DIRECCION INTEGER not null, \n" +
+                "TELEFONO_RESTAURANTE VARCHAR(8), \n"+
+                "LAT INTEGER , \n" +
+                "LONG INTEGER , \n" +
+                "ID_GOOGLE_MAPS text, \n" +
                 "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL unique, \n" +
-                "FOTO_RESTAURANTE VARCHAR(45)     , \n" +
-                "UNIQUE(ID_RESTAURANTE, ID_DIRECCION))");
+                "FOTO_RESTAURANTE text     , \n" +
+                "UNIQUE(ID_RESTAURANTE))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS TIPOCUPON(" +
                 "ID_TIPO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +

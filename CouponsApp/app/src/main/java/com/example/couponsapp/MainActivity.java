@@ -164,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void llenarBD(){
         //Direccion
-        long dir1 = direccionControl.insertDireccion(new Direccion(1, "San Salvador", "Los Próceres", ""));
-        Direccion direccion = new Direccion(1, "San Salvador", "Los Próceres", "");
+        long dir1 = direccionControl.insertDireccion(new Direccion(1,"Los Próceres"));
+        Direccion direccion = new Direccion(1,  "Los Próceres");
 
         //Restaurante
         long res1 = restauranteControl.insertRestaurante(new Restaurante(1, "Pizza Hut", direccion));

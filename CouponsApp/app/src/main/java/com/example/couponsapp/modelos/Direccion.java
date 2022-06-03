@@ -2,18 +2,15 @@ package com.example.couponsapp.modelos;
 
 public class Direccion {
     private int id_direccion;
-    private String municipio;
-    private String calle;
-    private String numero_local;
+    private String ubicacion;
+
 
     public Direccion() {
     }
 
-    public Direccion(int id_direccion, String municipio, String calle, String numero_local) {
+    public Direccion(int id_direccion,  String ubicacion) {
         this.id_direccion = id_direccion;
-        this.municipio = municipio;
-        this.calle = calle;
-        this.numero_local = numero_local;
+        this.ubicacion = ubicacion;
     }
 
     public int getId_direccion() {
@@ -24,27 +21,15 @@ public class Direccion {
         this.id_direccion = id_direccion;
     }
 
-    public String getMunicipio() {
-        return municipio;
+
+
+    public String getUbicacion() {
+        return ubicacion;
     }
 
-    public void setMunicipio(String municipio) {
-        this.municipio = municipio;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
-    public String getCalle() {
-        return calle;
-    }
 
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-    public String getNumero_local() {
-        return numero_local;
-    }
-
-    public void setNumero_local(String numero_local) {
-        this.numero_local = numero_local;
-    }
 }

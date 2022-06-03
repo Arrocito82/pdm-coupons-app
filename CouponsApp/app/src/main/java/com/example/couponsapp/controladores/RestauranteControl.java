@@ -34,16 +34,13 @@ public class RestauranteControl extends Control {
         Restaurante restaurante;
         Direccion direccion;
         //Cursor result = db.rawQuery("SELECT * FROM RESTAURANTE", null);
-        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.ID_DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.MUNICIPIO,\n" +
-                "DIRECCION.CALLE, DIRECCION.NUMERO_LOCAL FROM\n" +
+        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.ID_DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.UBICACION  FROM\n" +
                 "RESTAURANTE, DIRECCION WHERE RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION\n " +
                 "AND RESTAURANTE.ID_RESTAURANTE = ?", args);
         if(results.moveToFirst()){
             do {
                 direccion = new Direccion(  results.getInt(1),
-                        results.getString(3),
-                        results.getString(4),
-                        results.getString(5)
+                        results.getString(3)
                 );
                 restaurante = new Restaurante(
                         results.getInt(0),
@@ -64,15 +61,12 @@ public class RestauranteControl extends Control {
         Restaurante restaurante;
         Direccion direccion;
         //Cursor result = db.rawQuery("SELECT * FROM RESTAURANTE", null);
-        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.ID_DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.MUNICIPIO,\n" +
-                "DIRECCION.CALLE, DIRECCION.NUMERO_LOCAL FROM\n" +
+        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.ID_DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE,DIRECCION.UBICACION FROM\n" +
                 "RESTAURANTE, DIRECCION WHERE RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION", null);
         if(results.moveToFirst()){
             do {
                 direccion = new Direccion(  results.getInt(1),
-                        results.getString(3),
-                        results.getString(4),
-                        results.getString(5)
+                        results.getString(3)
                 );
                 restaurante = new Restaurante(
                         results.getInt(0),

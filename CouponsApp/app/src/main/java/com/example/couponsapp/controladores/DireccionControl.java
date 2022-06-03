@@ -15,9 +15,7 @@ public class DireccionControl extends Control {
         this.abrir();
         long id_res;
         ContentValues current = new ContentValues();
-        current.put("MUNICIPIO", direccion.getMunicipio());
-        current.put("CALLE", direccion.getCalle());
-        current.put("NUMERO_LOCAL", direccion.getNumero_local());
+        current.put("UBICACION", direccion.getUbicacion());
         id_res = db.insert("DIRECCION", null, current);
         this.cerrar();
         return id_res;

@@ -68,13 +68,13 @@ public class CuponControl extends Control {
         Restaurante restaurante;
         TipoCupon tipoCupon;
         Cursor result;
-        result = db.rawQuery("SELECT CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.CALLE, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION AND TIPOCUPON.NOMBRE_TIPO LIKE ?", args);
+        result = db.rawQuery("SELECT CUPON.ID_CUPON, CUPON.NOMBRE_CUPON, CUPON.DESCRIPCION_CUPON, CUPON.CODIGO_CUPON, TIPOCUPON.NOMBRE_TIPO, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.UBICACION, CUPON.HORARIO_CUPON, CUPON.DISPONIBLE, CUPON.PRECIO_CUPON FROM CUPON, TIPOCUPON, RESTAURANTE, DIRECCION WHERE CUPON.ID_RESTAURANTE = RESTAURANTE.ID_RESTAURANTE AND CUPON.ID_TIPO = TIPOCUPON.ID_TIPO AND RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION AND TIPOCUPON.NOMBRE_TIPO LIKE ?", args);
 
 
         if(result.moveToFirst()){
             do {
                 direccion = new Direccion();
-                direccion.setCalle(result.getString(6));
+                direccion.setUbicacion(result.getString(6));
                 restaurante = new Restaurante();
                 restaurante.setNombre_restaurante(result.getString(5));
                 restaurante.setDireccion(direccion);
@@ -111,7 +111,7 @@ public class CuponControl extends Control {
         if(result.moveToFirst()){
             do {
                 direccion = new Direccion();
-                direccion.setCalle(result.getString(6));
+                direccion.setUbicacion(result.getString(6));
                 restaurante = new Restaurante();
                 restaurante.setNombre_restaurante(result.getString(5));
                 restaurante.setDireccion(direccion);

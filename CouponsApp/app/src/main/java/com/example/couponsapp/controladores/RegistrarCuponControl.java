@@ -45,7 +45,7 @@ public class RegistrarCuponControl extends Control {
         if(result.moveToFirst()){
             do {
                 direccion = new Direccion();
-                direccion.setCalle(result.getString(7));
+                direccion.setUbicacion(result.getString(7));
                 restaurante = new Restaurante();
                 restaurante.setNombre_restaurante(result.getString(6));
                 restaurante.setDireccion(direccion);
