@@ -97,7 +97,12 @@ public class RestauranteFragment extends Fragment {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int is_success=(int)restauranteControl.insertRestaurante(restaurante);
+                int is_success;
+                if(is_new){
+                    is_success=(int)restauranteControl.insertRestaurante(restaurante);
+                }else{
+                    is_success=(int)restauranteControl.updateRestaurante(restaurante);
+                }
                 if(is_success>0){
                     Toast.makeText(getContext(),R.string.guardado,Toast.LENGTH_LONG).show();
                 }else{
@@ -147,19 +152,13 @@ public class RestauranteFragment extends Fragment {
                 guardar=getActivity().findViewById(R.id.guardar_restaurante);
                 edit_direccion=getActivity().findViewById(R.id.edit_direccion_negocio);
                 edit_nombre=getActivity().findViewById(R.id.edit_nombre_negocio);
-//                edit_latitud=getActivity().findViewById(R.id.edit_latitud_negocio);
-//                edit_longitud=getActivity().findViewById(R.id.edit_longitud_negocio);
-//                edit_id_maps=getActivity().findViewById(R.id.edit_id_map_negocio);
                 edit_telefono=getActivity().findViewById(R.id.edit_tell_negocio);
                 img_negocio=getActivity().findViewById(R.id.imageView_negocio);
 
                 //Recuperando datos de la Api
                 edit_nombre.setText(place.getName());
                 edit_direccion.setText(place.getAddress());
-//                edit_longitud.setText(String.valueOf(place.getLatLng().longitude));
-//                edit_latitud.setText(String.valueOf(place.getLatLng().longitude));
                 edit_telefono.setText(place.getPhoneNumber());
-//                edit_id_maps.setText(place.getId());
 
                 //URL de la imagen
                 if(place.getPhotoMetadatas().size()>0){

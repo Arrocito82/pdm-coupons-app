@@ -33,7 +33,7 @@ public class Restaurante {
         this.id_restaurante = id_restaurante;
         this.nombre_restaurante = nombre_restaurante;
         this.direccion = direccion;
-        this.telefono="";
+        this.telefono=telefono;
         this.lat = lat;
         this.lng = lng;
         this.id_google_maps = id_google_maps;
@@ -43,6 +43,7 @@ public class Restaurante {
         this.id_restaurante = 0;
         this.nombre_restaurante = nombre_restaurante;
         this.direccion = direccion;
+        this.telefono=telefono;
         this.lat = lat;
         this.lng = lng;
         this.id_google_maps = id_google_maps;

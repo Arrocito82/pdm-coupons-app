@@ -19,7 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS RESTAURANTE(" +
                 "ID_RESTAURANTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "ID_GOOGLE_MAPS text, \n" +
-                "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL unique, \n" +
+                "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL, \n" +
                 "DIRECCION TEXT not null, \n" +
                 "TELEFONO_RESTAURANTE VARCHAR(14), \n"+
                 "LAT DECIMAL(10,7) , \n" +

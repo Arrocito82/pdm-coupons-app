@@ -29,7 +29,28 @@ public class RestauranteControl extends Control {
         current.put("URL_IMAGEN",restaurante.getUrl_imagen());
         try{
             this.abrir();
-            id_res = db.insert("RESTAURANTE", null, current);
+            id_res = db.insert("RESTAURANTE",null,current);
+            this.cerrar();
+        }catch (Exception e){
+            Log.e("Insertar restaurante",e.getMessage());
+            id_res=0;
+        }
+        return id_res;
+    }
+    public long updateRestaurante(Restaurante restaurante){
+        long id_res;
+        String []id={String.valueOf(restaurante.getId_restaurante())};
+        ContentValues current = new ContentValues();
+        current.put("ID_GOOGLE_MAPS", restaurante.getId_google_maps());
+        current.put("NOMBRE_RESTAURANTE", restaurante.getNombre_restaurante());
+        current.put("DIRECCION", restaurante.getDireccion());
+        current.put("TELEFONO_RESTAURANTE", restaurante.getTelefono());
+        current.put("LAT", restaurante.getLat());
+        current.put("LONG",restaurante.getLng());
+        current.put("URL_IMAGEN",restaurante.getUrl_imagen());
+        try{
+            this.abrir();
+            id_res = db.update("RESTAURANTE",current,"ID_RESTAURANTE = ?",id);
             this.cerrar();
         }catch (Exception e){
             Log.e("Insertar restaurante",e.getMessage());
@@ -111,7 +132,7 @@ public class RestauranteControl extends Control {
     }
     public ArrayList<Restaurante> filtrarRestaurante(String nombre){
         ArrayList<Restaurante> list = new ArrayList<>();
-        String []target={nombre};
+        String []target={"%"+nombre+"%"};
         try{
             this.abrir();
             Cursor results = db.rawQuery("select * from RESTAURANTE where NOMBRE_RESTAURANTE like ?",target);
