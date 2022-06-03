@@ -16,17 +16,16 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS DIRECCION(" +
-                "ID_DIRECCION INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "MUNICIPIO VARCHAR(40) NOT NULL, \n" +
-                "CALLE VARCHAR(40) NOT NULL, \n" +
-                "NUMERO_LOCAL VARCHAR(7))");
-
         db.execSQL("CREATE TABLE IF NOT EXISTS RESTAURANTE(" +
                 "ID_RESTAURANTE INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-                "ID_DIRECCION INTEGER NOT NULL, \n" +
-                "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL, \n" +
-                "UNIQUE(ID_RESTAURANTE, ID_DIRECCION))");
+                "DIRECCION TEXT not null, \n" +
+                "TELEFONO_RESTAURANTE VARCHAR(8), \n"+
+                "LAT INTEGER , \n" +
+                "LONG INTEGER , \n" +
+                "ID_GOOGLE_MAPS text, \n" +
+                "NOMBRE_RESTAURANTE VARCHAR(40) NOT NULL unique, \n" +
+                "FOTO_RESTAURANTE text     , \n" +
+                "UNIQUE(ID_RESTAURANTE))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS TIPOCUPON(" +
                 "ID_TIPO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
@@ -61,7 +60,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS USUARIO(" +
                 "ID_USUARIO INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "ID_ROL INTEGER NOT NULL, \n" +
-                "ID_RESTAURANTE, \n" +
+                "ID_RESTAURANTE INTEGER, \n" +
                 "USERNAME VARCHAR(40) NOT NULL UNIQUE, \n" +
                 "PASSWORD VARCHAR(40) NOT NULL, \n" +
                 "EMAIL VARCHAR(100) NOT NULL UNIQUE, \n" +
@@ -69,6 +68,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "APELLIDO VARCHAR(40) NOT NULL, \n" +
                 "TELEFONO VARCHAR(8) NOT NULL, \n" +
                 "GOOGLE_USUARIO INTEGER NOT NULL, \n" +
+                "FOTO_PERFIL VARCHAR(45)     , \n" +
                 "UNIQUE(ID_USUARIO, ID_ROL))");
 
 
@@ -81,17 +81,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
         /*              TRIGGERS              */
-
-        db.execSQL("CREATE TRIGGER FK_RESTAURANTE_DIRECCION BEFORE INSERT " +
-                "ON RESTAURANTE " +
-                "FOR EACH ROW " +
-                "BEGIN " +
-                "SELECT CASE " +
-                "WHEN ((SELECT ID_DIRECCION FROM DIRECCION WHERE ID_DIRECCION = NEW.ID_DIRECCION) IS NULL) " +
-                "THEN RAISE(ABORT, 'No existe la dirección!') " +
-                "END; " +
-                "END; ");
-
 
         db.execSQL("CREATE TRIGGER FK_CUPON_RESTAURANTE BEFORE INSERT " +
                 "ON CUPON " +
@@ -116,7 +105,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS DIRECCION");
         db.execSQL("DROP TABLE IF EXISTS RESTAURANTE");
         db.execSQL("DROP TABLE IF EXISTS TIPOCUPON");
         db.execSQL("DROP TABLE IF EXISTS CUPON");

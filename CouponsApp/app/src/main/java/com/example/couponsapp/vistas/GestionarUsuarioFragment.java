@@ -90,19 +90,19 @@ public class GestionarUsuarioFragment extends Fragment {
         view.findViewById(R.id.btn_nuevo_crud).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.crear();
+                adapter.crear(v,getParentFragmentManager());
             }
         });
         buscarBar.setHint(placeholder);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View viewSelected, int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setItems(R.array.crud_array, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case 0:
-                                adapter.editar(position);
+                                adapter.editar(view,getParentFragmentManager(),adapter.getItem(position));
                                 break;
                             case 1:
                                 adapter.eliminar(position);

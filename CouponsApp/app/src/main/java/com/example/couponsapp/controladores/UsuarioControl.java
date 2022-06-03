@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.example.couponsapp.dbHelper.Control;
@@ -17,7 +19,7 @@ public class UsuarioControl extends Control {
     }
 
     public long insertUsuario(Usuario usuario){
-        this.abrir();
+
         long id_res;
         ContentValues current = new ContentValues();
         current.put("ID_ROL", usuario.getId_rol());
@@ -29,13 +31,19 @@ public class UsuarioControl extends Control {
         current.put("APELLIDO", usuario.getApellido());
         current.put("TELEFONO", usuario.getTelefono());
         current.put("GOOGLE_USUARIO", usuario.getGoogle_usuario());
-        id_res = db.insert("USUARIO", null, current);
-        this.cerrar();
+        try{
+            this.abrir();
+            id_res = db.insert("USUARIO", null, current);
+            this.cerrar();
+        }catch (SQLiteException e){
+            Log.e("Error DB",e.getMessage());
+            id_res=-25;
+        }
+
         return  id_res;
     }
 
     public int updateUsuario(Usuario usuario){
-        this.abrir();
         int id_res;
         String[] args = {String.valueOf(usuario.getId_usuario())};
         ContentValues current = new ContentValues();
@@ -48,16 +56,26 @@ public class UsuarioControl extends Control {
         current.put("APELLIDO", usuario.getApellido());
         current.put("TELEFONO", usuario.getTelefono());
         current.put("GOOGLE_USUARIO", usuario.getGoogle_usuario());
+        try{
+        this.abrir();
         id_res = db.update("USUARIO", current, "ID_USUARIO = ?", args);
         this.cerrar();
+        }catch (SQLiteConstraintException e){
+            id_res=0;
+        }
         return  id_res;
     }
 
     public int deleteUsuario(int id_usuario){
-        this.abrir();
         String[] args = {String.valueOf(id_usuario)};
-        int id_del = db.delete("USUARIO", "ID_USUARIO = ?", args);
-        this.cerrar();
+        int id_del;
+        try{
+            this.abrir();
+            id_del = db.delete("USUARIO", "ID_USUARIO = ?", args);
+            this.cerrar();
+        }catch (SQLiteConstraintException e){
+            id_del=0;
+        }
         return  id_del;
     }
 
@@ -128,12 +146,36 @@ public class UsuarioControl extends Control {
         res.close();
         return usuario;
     }
-
     public Usuario traerUsuarioById (int id_usuario){
         this.abrir();
         Usuario usuario;
         String[] args = {String.valueOf(id_usuario)};
         Cursor res = db.rawQuery("SELECT * FROM USUARIO WHERE ID_USUARIO = ? ", args);
+        if (res.moveToFirst()){
+            usuario = new Usuario(
+                    res.getInt(0),
+                    res.getInt(1),
+                    res.getInt(2),
+                    res.getString(3),
+                    res.getString(4),
+                    res.getString(5),
+                    res.getString(6),
+                    res.getString(7),
+                    res.getString(8),
+                    res.getInt(9)
+            );
+        }
+        else{
+            usuario = new Usuario();
+        }
+        res.close();
+        return usuario;
+    }
+    public Usuario readUsuario(int id_usuario){
+        this.abrir();
+        Usuario usuario;
+        String[] args = {String.valueOf(id_usuario)};
+        Cursor res = db.rawQuery("SELECT * FROM USUARIO WHERE ID_USUARIO = ?", args);
         if (res.moveToFirst()){
             usuario = new Usuario(
                     res.getInt(0),

@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.example.couponsapp.dbHelper.Control;
-import com.example.couponsapp.modelos.Direccion;
 import com.example.couponsapp.modelos.Restaurante;
-import com.example.couponsapp.modelos.TipoCupon;
 
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ public class RestauranteControl extends Control {
         this.abrir();
         long id_res;
         ContentValues current = new ContentValues();
-        current.put("ID_DIRECCION", restaurante.getDireccion().getId_direccion());
+        current.put("DIRECCION", restaurante.getDireccion());
         current.put("NOMBRE_RESTAURANTE", restaurante.getNombre_restaurante());
         id_res = db.insert("RESTAURANTE", null, current);
         this.cerrar();
@@ -32,23 +30,15 @@ public class RestauranteControl extends Control {
         String[] args = {id_restaurante};
         ArrayList<Restaurante> list = new ArrayList<>();
         Restaurante restaurante;
-        Direccion direccion;
         //Cursor result = db.rawQuery("SELECT * FROM RESTAURANTE", null);
-        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.ID_DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.MUNICIPIO,\n" +
-                "DIRECCION.CALLE, DIRECCION.NUMERO_LOCAL FROM\n" +
-                "RESTAURANTE, DIRECCION WHERE RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION\n " +
-                "AND RESTAURANTE.ID_RESTAURANTE = ?", args);
+        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE FROM\n" +
+                "RESTAURANTE WHERE RESTAURANTE.ID_RESTAURANTE = ?", args);
         if(results.moveToFirst()){
             do {
-                direccion = new Direccion(  results.getInt(1),
-                        results.getString(3),
-                        results.getString(4),
-                        results.getString(5)
-                );
                 restaurante = new Restaurante(
                         results.getInt(0),
                         results.getString(2),
-                        direccion
+                        results.getString(1)
                 );
                 list.add(restaurante);
             }while (results.moveToNext());
@@ -62,22 +52,15 @@ public class RestauranteControl extends Control {
         this.abrir();
         ArrayList<Restaurante> list = new ArrayList<>();
         Restaurante restaurante;
-        Direccion direccion;
         //Cursor result = db.rawQuery("SELECT * FROM RESTAURANTE", null);
-        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.ID_DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE, DIRECCION.MUNICIPIO,\n" +
-                "DIRECCION.CALLE, DIRECCION.NUMERO_LOCAL FROM\n" +
-                "RESTAURANTE, DIRECCION WHERE RESTAURANTE.ID_DIRECCION = DIRECCION.ID_DIRECCION", null);
+        Cursor results = db.rawQuery("SELECT RESTAURANTE.ID_RESTAURANTE, RESTAURANTE.DIRECCION, RESTAURANTE.NOMBRE_RESTAURANTE FROM\n" +
+                "RESTAURANTE", null);
         if(results.moveToFirst()){
             do {
-                direccion = new Direccion(  results.getInt(1),
-                        results.getString(3),
-                        results.getString(4),
-                        results.getString(5)
-                );
                 restaurante = new Restaurante(
                         results.getInt(0),
                         results.getString(2),
-                        direccion
+                        results.getString(1)
                 );
                 list.add(restaurante);
             }while (results.moveToNext());
