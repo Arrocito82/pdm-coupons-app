@@ -31,6 +31,7 @@ public class UsuarioControl extends Control {
         current.put("APELLIDO", usuario.getApellido());
         current.put("TELEFONO", usuario.getTelefono());
         current.put("GOOGLE_USUARIO", usuario.getGoogle_usuario());
+        current.put("URI_FOTO_PERFIL",usuario.getUri_foto_perfil());
         try{
             this.abrir();
             id_res = db.insert("USUARIO", null, current);
@@ -56,6 +57,7 @@ public class UsuarioControl extends Control {
         current.put("APELLIDO", usuario.getApellido());
         current.put("TELEFONO", usuario.getTelefono());
         current.put("GOOGLE_USUARIO", usuario.getGoogle_usuario());
+        current.put("URI_FOTO_PERFIL",usuario.getUri_foto_perfil());
         try{
         this.abrir();
         id_res = db.update("USUARIO", current, "ID_USUARIO = ?", args);
@@ -96,7 +98,8 @@ public class UsuarioControl extends Control {
                         res.getString(6),
                         res.getString(7),
                         res.getString(8),
-                        res.getInt(9)
+                        res.getInt(9),
+                        res.getString(10)
                 );
                 usuarios.add(usuario);
             }while (res.moveToNext());
@@ -137,7 +140,8 @@ public class UsuarioControl extends Control {
                     res.getString(6),
                     res.getString(7),
                     res.getString(8),
-                    res.getInt(9)
+                    res.getInt(9),
+                    res.getString(10)
             );
         }
         else{
@@ -162,7 +166,8 @@ public class UsuarioControl extends Control {
                     res.getString(6),
                     res.getString(7),
                     res.getString(8),
-                    res.getInt(9)
+                    res.getInt(9),
+                    res.getString(10)
             );
         }
         else{
@@ -187,7 +192,8 @@ public class UsuarioControl extends Control {
                     res.getString(6),
                     res.getString(7),
                     res.getString(8),
-                    res.getInt(9)
+                    res.getInt(9),
+                    res.getString(10)
             );
         }
         else{
@@ -246,7 +252,8 @@ public class UsuarioControl extends Control {
                         results.getString(6),
                         results.getString(7),
                         results.getString(8),
-                        results.getInt(9)));
+                        results.getInt(9),
+                        results.getString(10)));
             }
         }catch (SQLException e){
             Log.e("Error",e.getMessage());

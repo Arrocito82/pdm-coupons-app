@@ -68,7 +68,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "APELLIDO VARCHAR(40) NOT NULL, \n" +
                 "TELEFONO VARCHAR(8) NOT NULL, \n" +
                 "GOOGLE_USUARIO INTEGER NOT NULL, \n" +
-                "FOTO_PERFIL VARCHAR(45)     , \n" +
+                "URI_FOTO_PERFIL VARCHAR(45)     , \n" +
                 "UNIQUE(ID_USUARIO, ID_ROL))");
 
 

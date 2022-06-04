@@ -53,6 +53,7 @@ import java.util.Date;
 public class UsuarioFragment extends Fragment {
     int REQUEST_IMAGE_CAPTURE = 22;
     String currentPhotoPath;
+    Uri photoURI=null;
     int id_usuario;
     UsuarioControl usuarioControl;
     RolAdapter rolAdapter;
@@ -132,6 +133,18 @@ public class UsuarioFragment extends Fragment {
             telefono.setText(usuario.getTelefono());
             rolSpinner.setVisibility(View.VISIBLE);
             rolSpinner.setAdapter(rolAdapter);
+            if (!usuario.getUri_foto_perfil().equals("")){
+                //recuperando la imagen de donde fue almacenada
+                String directory = getContext().getFilesDir().toString();
+                File image=new File(directory,usuario.getUri_foto_perfil());
+                //guardando temporalmente la uri de el archivo.jpg
+                photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.couponsapp.fileprovider",
+                        image);
+                //asginando el bitmap a el ImageView en UI
+                fotoPerfilImg.setImageURI(photoURI);
+            }
+
             if(isAdmin){
                 usernameEditText.setEnabled(true);
             }
@@ -146,6 +159,7 @@ public class UsuarioFragment extends Fragment {
                 usuario.setApellido(apellidosEditText.getText().toString());
                 usuario.setEmail(emailEditText.getText().toString());
                 usuario.setTelefono(telefono.getText().toString());
+                usuario.setUri_foto_perfil(currentPhotoPath);
 
                 if(isNew){
                     if(passwordEditText.getText().toString().equals(passwordEditText2.getText().toString())){
@@ -153,6 +167,7 @@ public class UsuarioFragment extends Fragment {
                         usuario.setPassword(passwordEditText.getText().toString());
                         usuario.setUsername(usernameEditText.getText().toString());
                         usuario.setId_rol(selectedRol.getId_rol());
+
 
                         //aqui se guarda el usuario
                         updatedCount=(int)usuarioControl.insertUsuario(usuario);
@@ -205,7 +220,7 @@ public class UsuarioFragment extends Fragment {
                 }
             });
         }
-        //events listeners para subir foto
+
         //events listeners para tomar foto
         tomarFotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,7 +229,7 @@ public class UsuarioFragment extends Fragment {
             }
         });
 
-
+        //events listeners para subir foto
 
     }
     private Boolean cambiarContrasena(){
@@ -238,12 +253,6 @@ public class UsuarioFragment extends Fragment {
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-
-            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//
-//                takePictureIntent.putExtra("uri", photoURI);
-                //startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
@@ -259,16 +268,13 @@ public class UsuarioFragment extends Fragment {
             //extrayendo el bitmap que retorna action image capture intent
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Uri photoURI=null;
+
             File photoFile = null;
             FileOutputStream fileOutputStream;
             try {
                 //creando un archivo donde almacenar el bitmap, retorna un archivo jpg
                 photoFile = createImageFile();
                 //guardando temporalmente la uri de el archivo.jpg
-                photoURI = FileProvider.getUriForFile(getContext(),
-                        "com.example.couponsapp.fileprovider",
-                        photoFile);
                 if(photoFile!=null) {
                 //preparando el archivo para imprimir el bitmap
                 fileOutputStream = new FileOutputStream(photoFile);
@@ -276,13 +282,10 @@ public class UsuarioFragment extends Fragment {
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100,fileOutputStream);
                 fileOutputStream.flush();
                 fileOutputStream.close();
-                //recuperando la imagen de donde fue almacenada
-                String extStorageDirectory = getContext().getFilesDir().toString();
-                File image2=new File(extStorageDirectory,currentPhotoPath);
-                //guardando temporalmente la uri de el archivo.jpg
                 photoURI = FileProvider.getUriForFile(getContext(),
                         "com.example.couponsapp.fileprovider",
-                        image2);
+                        photoFile);
+
                 //asginando el bitmap a el ImageView en UI
                 fotoPerfilImg.setImageURI(photoURI);
                 }
@@ -305,7 +308,7 @@ public class UsuarioFragment extends Fragment {
         }
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_"+usuario.getUsername()+"_" + timeStamp + "_";
+        String imageFileName = "JPEG_"+ timeStamp + "_";
         File storageDir = new File(getContext().getFilesDir(), "pictures");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -313,7 +316,7 @@ public class UsuarioFragment extends Fragment {
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
+        // path del archivo creado
         currentPhotoPath = "pictures/"+image.getName();
         return image;
     }

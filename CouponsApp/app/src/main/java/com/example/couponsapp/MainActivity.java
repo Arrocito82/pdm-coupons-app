@@ -154,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         long rolPermiso2 = rolPermisoControl.insertRolPermiso(new RolPermiso(2,(int)rolEncargado, (int)permisoEncargado));
         long rolPermiso3 = rolPermisoControl.insertRolPermiso(new RolPermiso(3,(int)rolCliente, (int)permisoCliente));
 
-        long usuarioAdmin = usuarioControl.insertUsuario(new Usuario(1, (int)rolAdmin, 0,"admin", "admin123", "admin@gmail.com", "Eduardo", "Orellana", "78787878", 0));
-        long usuarioEncargado = usuarioControl.insertUsuario(new Usuario(2, (int)rolEncargado, 1,"encargado", "encargado123", "encargado@gmail.com", "Julia", "Lopez", "79235499", 0));
-        long usuarioCliente = usuarioControl.insertUsuario(new Usuario(3, (int)rolCliente, 0,"cliente", "cliente123", "encargado@gmail.com", "Julia", "Lopez", "75757575", 0));
+        long usuarioAdmin = usuarioControl.insertUsuario(new Usuario(1, (int)rolAdmin, 0,"admin", "admin123", "admin@gmail.com", "Eduardo", "Orellana", "78787878", 0,""));
+        long usuarioEncargado = usuarioControl.insertUsuario(new Usuario(2, (int)rolEncargado, 1,"encargado", "encargado123", "encargado@gmail.com", "Julia", "Lopez", "79235499", 0,""));
+        long usuarioCliente = usuarioControl.insertUsuario(new Usuario(3, (int)rolCliente, 0,"cliente", "cliente123", "encargado@gmail.com", "Julia", "Lopez", "75757575", 0,""));
     }
 
     public void llenarBD(){

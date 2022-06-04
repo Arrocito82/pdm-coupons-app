@@ -98,7 +98,8 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                         cuenta.getDisplayName(),
                         "",
                         "",
-                        1
+                        1,
+                        ""
                 ));
 
                 //Enviar correo electronico de bienvenida
