@@ -1,28 +1,18 @@
 package com.example.couponsapp.vistas;
 
-import static android.os.Environment.*;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,18 +22,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.RolAdapter;
 import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.modelos.Rol;
 import com.example.couponsapp.modelos.Usuario;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
