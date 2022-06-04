@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -268,16 +270,21 @@ public class UsuarioFragment extends Fragment {
                         "com.example.couponsapp.fileprovider",
                         photoFile);
                 if(photoFile!=null) {
-                        //preparando el archivo para imprimir el bitmap
-                        fileOutputStream = new FileOutputStream(photoFile);
-                        //imprimiendo bitmap
-                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100,fileOutputStream);
-                        fileOutputStream.flush();
-                        fileOutputStream.close();
-                        //asginando el bitmap a el ImageView en UI
-                        fotoPerfilImg.setImageBitmap(imageBitmap);
-
-
+                //preparando el archivo para imprimir el bitmap
+                fileOutputStream = new FileOutputStream(photoFile);
+                //imprimiendo bitmap
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100,fileOutputStream);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                //recuperando la imagen de donde fue almacenada
+                String extStorageDirectory = getContext().getFilesDir().toString();
+                File image2=new File(extStorageDirectory,currentPhotoPath);
+                //guardando temporalmente la uri de el archivo.jpg
+                photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.couponsapp.fileprovider",
+                        image2);
+                //asginando el bitmap a el ImageView en UI
+                fotoPerfilImg.setImageURI(photoURI);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -307,7 +314,7 @@ public class UsuarioFragment extends Fragment {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        currentPhotoPath = "pictures/"+image.getName();
         return image;
     }
 }
