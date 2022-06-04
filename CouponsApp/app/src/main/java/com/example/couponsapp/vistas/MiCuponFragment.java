@@ -135,9 +135,8 @@ public class MiCuponFragment extends Fragment {
                 canvas.drawText("Información en QR", docPageInfo.getPageWidth()/2, 70, paint);
 
                 canvas.drawBitmap(scaleBitmap, 25, 90, paint);
-
                 miDocumento.finishPage(docPage1);
-                File file = new File(Environment.getExternalStorageDirectory(), "CUPON-"+cCupon+".pdf");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "CUPON-"+cCupon+".pdf");
 
                 try {
                     miDocumento.writeTo(new FileOutputStream(file));
