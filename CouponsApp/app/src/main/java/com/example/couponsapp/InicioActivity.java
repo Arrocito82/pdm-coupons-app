@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -40,6 +41,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.example.couponsapp.email.SendEmail;
 import com.example.couponsapp.email.Config;
+
+import java.io.File;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
@@ -98,7 +101,8 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                         cuenta.getDisplayName(),
                         "",
                         "",
-                        1
+                        1,
+                        ""
                 ));
 
                 //Enviar correo electronico de bienvenida
@@ -134,6 +138,17 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             email.setText(usuario.getEmail());
             rol_usuario = usuario.getId_rol();
             id_usuario = usuario.getId_usuario();
+            if (!usuario.getUri_foto_perfil().equals("")&& id_usuario<3){
+                //recuperando la imagen de donde fue almacenada
+                String directory = this.getFilesDir().toString();
+                File image=new File(directory,usuario.getUri_foto_perfil());
+                //guardando temporalmente la uri de el archivo.jpg
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.couponsapp.fileprovider",
+                        image);
+                //asginando el bitmap a el ImageView en UI
+                foto.setImageURI(photoURI);
+            }
         }
 
         //Inicializar en la opcion home

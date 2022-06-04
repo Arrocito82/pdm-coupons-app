@@ -1,33 +1,45 @@
 package com.example.couponsapp.vistas;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.RolAdapter;
 import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.modelos.Rol;
 import com.example.couponsapp.modelos.Usuario;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Este fragmento tiene por proposito registrar y editar usuario
  */
 public class UsuarioFragment extends Fragment {
-
+    int REQUEST_IMAGE_CAPTURE = 22;
+    String currentPhotoPath;
+    Uri photoURI=null;
     int id_usuario;
     UsuarioControl usuarioControl;
     RolAdapter rolAdapter;
@@ -36,6 +48,8 @@ public class UsuarioFragment extends Fragment {
     EditText usernameEditText,passwordEditText,passwordEditText2,emailEditText,nombreEditText,apellidosEditText,telefono;
     EditText passwordConfirmation1,passwordConfirmation2;
     Button guardarBtn,cambiarContrasenaBtn;
+    ImageButton tomarFotoBtn,subirFotoBtn;
+    ImageView fotoPerfilImg;
     Spinner rolSpinner;
     int updatedCount=0;
 
@@ -81,7 +95,9 @@ public class UsuarioFragment extends Fragment {
         apellidosEditText=view.findViewById(R.id.perfil_de_usuario_apellidos);
         telefono=view.findViewById(R.id.perfil_de_usuario_telefono);
         rolSpinner=view.findViewById(R.id.perfil_spinner_rol);
-
+        tomarFotoBtn=view.findViewById(R.id.tomar_foto_btn);
+        subirFotoBtn=view.findViewById(R.id.upload_foto_btn);
+        fotoPerfilImg=view.findViewById(R.id.foto_perfil);
 
         if(isNew){
             cambiarContrasenaBtn.setVisibility(View.GONE);
@@ -103,6 +119,18 @@ public class UsuarioFragment extends Fragment {
             telefono.setText(usuario.getTelefono());
             rolSpinner.setVisibility(View.VISIBLE);
             rolSpinner.setAdapter(rolAdapter);
+            if (!usuario.getUri_foto_perfil().equals("")){
+                //recuperando la imagen de donde fue almacenada
+                String directory = getContext().getFilesDir().toString();
+                File image=new File(directory,usuario.getUri_foto_perfil());
+                //guardando temporalmente la uri de el archivo.jpg
+                photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.couponsapp.fileprovider",
+                        image);
+                //asginando el bitmap a el ImageView en UI
+                fotoPerfilImg.setImageURI(photoURI);
+            }
+
             if(isAdmin){
                 usernameEditText.setEnabled(true);
             }
@@ -117,6 +145,7 @@ public class UsuarioFragment extends Fragment {
                 usuario.setApellido(apellidosEditText.getText().toString());
                 usuario.setEmail(emailEditText.getText().toString());
                 usuario.setTelefono(telefono.getText().toString());
+                usuario.setUri_foto_perfil(currentPhotoPath);
 
                 if(isNew){
                     if(passwordEditText.getText().toString().equals(passwordEditText2.getText().toString())){
@@ -124,6 +153,7 @@ public class UsuarioFragment extends Fragment {
                         usuario.setPassword(passwordEditText.getText().toString());
                         usuario.setUsername(usernameEditText.getText().toString());
                         usuario.setId_rol(selectedRol.getId_rol());
+
 
                         //aqui se guarda el usuario
                         updatedCount=(int)usuarioControl.insertUsuario(usuario);
@@ -177,7 +207,15 @@ public class UsuarioFragment extends Fragment {
             });
         }
 
+        //events listeners para tomar foto
+        tomarFotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
 
+        //events listeners para subir foto
 
     }
     private Boolean cambiarContrasena(){
@@ -194,4 +232,78 @@ public class UsuarioFragment extends Fragment {
         return isValid;
     }
 
+    /**
+     * metodo para iniciar un intent para abrir la camara del telefono
+     * y esperar por el resultado
+     */
+    private void dispatchTakePictureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+
+
+
+    /**
+     * metodo para esperar por el resultado de la camara intent
+     * con el codigo REQUEST_IMAGE_CAPTURE definido en las declaraciones de variables
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            //extrayendo el bitmap que retorna action image capture intent
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            File photoFile = null;
+            FileOutputStream fileOutputStream;
+            try {
+                //creando un archivo donde almacenar el bitmap, retorna un archivo jpg
+                photoFile = createImageFile();
+                //guardando temporalmente la uri de el archivo.jpg
+                if(photoFile!=null) {
+                //preparando el archivo para imprimir el bitmap
+                fileOutputStream = new FileOutputStream(photoFile);
+                //imprimiendo bitmap
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100,fileOutputStream);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.couponsapp.fileprovider",
+                        photoFile);
+
+                //asginando el bitmap a el ImageView en UI
+                fotoPerfilImg.setImageURI(photoURI);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * metodo para guardar un archivo jpg para la foto de perfil
+     * y retornar un archivo del tipo jpg
+     */
+    private File createImageFile() throws IOException {
+        //verificando que existe el directorio donde se guardaran existe
+        File dir= new File(getContext().getFilesDir(), "pictures");
+        if(!dir.exists()){
+            dir.mkdir();
+        }
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_"+ timeStamp + "_";
+        File storageDir = new File(getContext().getFilesDir(), "pictures");
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // path del archivo creado
+        currentPhotoPath = "pictures/"+image.getName();
+        return image;
+    }
 }

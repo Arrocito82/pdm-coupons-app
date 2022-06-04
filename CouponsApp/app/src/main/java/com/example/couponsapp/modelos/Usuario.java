@@ -12,11 +12,12 @@ public class Usuario {
     private String apellido;
     private String telefono;
     private int google_usuario;
+    private String uri_foto_perfil;
 
     public Usuario() {
     }
 
-    public Usuario(int id_usuario, int id_rol, int id_restaurante, String username, String password, String email, String nombre, String apellido, String telefono, int google_usuario) {
+    public Usuario(int id_usuario, int id_rol, int id_restaurante, String username, String password, String email, String nombre, String apellido, String telefono, int google_usuario,String uri_foto_perfil) {
         this.id_usuario = id_usuario;
         this.id_rol = id_rol;
         this.id_restaurante = id_restaurante;
@@ -27,6 +28,7 @@ public class Usuario {
         this.apellido = apellido;
         this.telefono = telefono;
         this.google_usuario = google_usuario;
+        this.uri_foto_perfil=uri_foto_perfil;
     }
 
     public int getId_usuario() {
@@ -107,5 +109,13 @@ public class Usuario {
 
     public void setGoogle_usuario(int google_usuario) {
         this.google_usuario = google_usuario;
+    }
+
+    public String getUri_foto_perfil() {
+        return uri_foto_perfil;
+    }
+
+    public void setUri_foto_perfil(String uri_foto_perfil) {
+        this.uri_foto_perfil = uri_foto_perfil;
     }
 }
