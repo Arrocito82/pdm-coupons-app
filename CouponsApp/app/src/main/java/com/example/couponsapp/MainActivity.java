@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     public void llenarBD(){
 
         //Restaurante
-        Restaurante restaurante = new Restaurante(1, "Pizza Hut", "direccion");
+        Restaurante restaurante = new Restaurante("ChIJhawemWEwY48RW99ILymtG0I", "Pizza Hut Los Heroes", "Sobre Blvd. De los Heroes, a un costado de mundo feliz RR, Blvr. De Los Heroes, San Salvador, El Salvador","",13.7090082, -89.210617, "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photo_reference=Aap_uEDyn5nMJVMpBgTxmRZfwLhcZ8DIRf1qPaW9r4feWvd6sVf7Bck1xr0rjIlPHLpcqvvtyYvtqRMneRu5RDHFu6SS1629CZOE13O6NsKgEbau0lVLq3YQlLQekwGmm7OQe23hS-88hR3g8Wrkg24uiqpJRG0IZw51fW4XygvMnLnFdqmL&key=AIzaSyDfzM6e_uHjNlq-_6rk6nM-PEYWHOnLE20");
         long res1 = restauranteControl.insertRestaurante(restaurante);
         restaurante.setId_restaurante((int)res1);
 

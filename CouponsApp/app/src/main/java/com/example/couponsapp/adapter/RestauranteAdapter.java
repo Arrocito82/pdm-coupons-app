@@ -17,6 +17,7 @@ import com.example.couponsapp.controladores.RestauranteControl;
 import com.example.couponsapp.modelos.Restaurante;
 import com.example.couponsapp.R;
 import com.example.couponsapp.modelos.Usuario;
+import com.example.couponsapp.vistas.MapsRestaurantes;
 import com.example.couponsapp.vistas.RestauranteFragment;
 import com.example.couponsapp.vistas.UsuarioFragment;
 
@@ -57,7 +58,7 @@ public class RestauranteAdapter extends BaseAdapter {
         Fragment fragment=new RestauranteFragment();
         fragment.setArguments(args);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content, fragment);
+        fragmentTransaction.replace(R.id.content, fragment).addToBackStack(null);
         fragmentTransaction.commit();
     }
     public void eliminar(int position){
@@ -78,6 +79,18 @@ public class RestauranteAdapter extends BaseAdapter {
         items= control.filtrarRestaurante(busqueda);
         notifyDataSetChanged();
 
+    }
+    //Para abrir mapa
+    public  void ver_mapa(View view, FragmentManager fragmentManager, Restaurante restaurante){
+        Bundle args=new Bundle();
+        args.putBoolean("is_new",false);
+        args.putBoolean("is_admin",true);
+        args.putInt("id_restaurante",restaurante.getId_restaurante());
+        Fragment fragment=new MapsRestaurantes();
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content, fragment).addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
