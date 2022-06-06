@@ -22,6 +22,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments()!=null){
+            String username=getArguments().getString("username");
+            usuario = username;
+        }else{
+            usuario="";
+        }
     }
 
     @Override
@@ -33,10 +40,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Bundle data = getArguments();
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         nombre = (TextView) root.findViewById(R.id.text_usuario);
-        usuario = "Prueba";
 
         return root;
     }

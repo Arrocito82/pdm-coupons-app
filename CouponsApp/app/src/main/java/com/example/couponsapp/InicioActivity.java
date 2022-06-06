@@ -103,8 +103,7 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
             String userString = cuenta.getEmail().substring(0, indexUser);
 
             if(usuarioControl.userExist(userString, cuenta.getEmail()) == 0){
-
-                usuarioControl.insertUsuario(new Usuario(
+                usuario=new Usuario(
                         0, //no tiene relevancia para insert
                         3,
                         0,
@@ -116,7 +115,8 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                         "",
                         1,
                         ""
-                ));
+                );
+                usuarioControl.insertUsuario(usuario);
 
                 //Enviar correo electronico de bienvenida
                 String mEmail = cuenta.getEmail();
@@ -191,7 +191,11 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
         }
 
         //Inicializar en la opcion home
-        getSupportFragmentManager().beginTransaction().add(R.id.content, new HomeFragment()).commit();
+        Bundle data = new Bundle();
+        data.putString("username",usuario.getUsername());
+        Fragment home=new HomeFragment();
+        home.setArguments(data);
+        getSupportFragmentManager().beginTransaction().add(R.id.content,home ).commit();
         setTitle("Home");
         setSupportActionBar(toolbar);
 
