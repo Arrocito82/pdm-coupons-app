@@ -253,10 +253,6 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                 replaceFragment(new UsuarioFragment());
                 setTitle("Perfil");
                 break;
-            case R.id.nav_pdf_viewer:
-                replaceFragment(new PDFViewerFragment());
-                setTitle("QRs");
-                break;
         }
         setTitle(item.getTitle());
         drawerLayout.closeDrawers();
