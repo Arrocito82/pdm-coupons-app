@@ -33,6 +33,10 @@
             android:id="@+id/nav_restaurante"
             android:icon="@drawable/ic_baseline_fastfood_24"
             android:title="Restaurantes" />
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="Perfil" />
     </group>
 
     <item
