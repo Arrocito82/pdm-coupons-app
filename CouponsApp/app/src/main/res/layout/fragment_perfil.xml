@@ -51,6 +51,7 @@
                         android:id="@+id/upload_foto_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:src="@drawable/ic_baseline_file_upload_24"/>
                 </LinearLayout>
             </LinearLayout>

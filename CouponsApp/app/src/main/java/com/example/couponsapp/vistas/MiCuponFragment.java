@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
@@ -27,21 +28,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.couponsapp.R;
+import com.example.couponsapp.controladores.CuponControl;
+import com.example.couponsapp.controladores.RegistrarCuponControl;
+import com.example.couponsapp.modelos.RegistrarCupon;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 
 public class MiCuponFragment extends Fragment {
-
+    RegistrarCuponControl registrarCuponControl;
     TextView nCupon, dCupon, hCupon, pCupon, nRest;
     Button btnPDF, btnTTP;
     String cCupon, dRes, nRests, name, desc, horario, precio, uName, uEmail;
-    int idUsuario, idCupon;
+    int idUsuario, idCupon, id_registro;
 
     Bitmap bmp, scaleBitmap;
     private TextToSpeech tts;
@@ -52,6 +58,7 @@ public class MiCuponFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        registrarCuponControl=new RegistrarCuponControl(getContext());
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_mi_cupon, container, false);
         Bundle data = getArguments();
@@ -86,6 +93,7 @@ public class MiCuponFragment extends Fragment {
             idUsuario = data.getInt("idUserD");
             uName = data.getString("nameUser");
             uEmail = data.getString("userEmail");
+            id_registro=data.getInt("id_registro");
         }
 
         try {
@@ -119,34 +127,63 @@ public class MiCuponFragment extends Fragment {
         btnPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PdfDocument miDocumento = new PdfDocument();
-                Paint paint = new Paint();
+                //verificando si ya existe
+                String uri=registrarCuponControl.get_uri_pdf(id_registro);
+                if(uri.equals("")){
+                    PdfDocument miDocumento = new PdfDocument();
+                    Paint paint = new Paint();
 
-                PdfDocument.PageInfo docPageInfo = new PdfDocument.PageInfo.Builder(250, 400, 1).create();
-                PdfDocument.Page docPage1 = miDocumento.startPage(docPageInfo);
-                Canvas canvas = docPage1.getCanvas();
+                    PdfDocument.PageInfo docPageInfo = new PdfDocument.PageInfo.Builder(250, 400, 1).create();
+                    PdfDocument.Page docPage1 = miDocumento.startPage(docPageInfo);
+                    Canvas canvas = docPage1.getCanvas();
 
-                paint.setTextAlign(Paint.Align.CENTER);
-                paint.setTextSize(12.0f);
-                canvas.drawText("CUPON #"+cCupon, docPageInfo.getPageWidth()/2, 30, paint);
+                    paint.setTextAlign(Paint.Align.CENTER);
+                    paint.setTextSize(12.0f);
+                    canvas.drawText("CUPON #"+cCupon, docPageInfo.getPageWidth()/2, 30, paint);
 
-                paint.setTextSize(9.0f);
-                paint.setColor(Color.rgb(122,119,119));
-                canvas.drawText("Información en QR", docPageInfo.getPageWidth()/2, 70, paint);
+                    paint.setTextSize(9.0f);
+                    paint.setColor(Color.rgb(122,119,119));
+                    canvas.drawText("Información en QR", docPageInfo.getPageWidth()/2, 70, paint);
 
-                canvas.drawBitmap(scaleBitmap, 25, 90, paint);
-                miDocumento.finishPage(docPage1);
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "CUPON-"+cCupon+".pdf");
+                    canvas.drawBitmap(scaleBitmap, 25, 90, paint);
+                    miDocumento.finishPage(docPage1);
 
-                try {
-                    miDocumento.writeTo(new FileOutputStream(file));
-                    Toast.makeText(v.getContext(), "PDF generado", Toast.LENGTH_SHORT).show();
+                    //guardando pdf en files/coupons/
+                    File dir= new File(getContext().getFilesDir(), "coupons");
+                    if(!dir.exists()){
+                        dir.mkdir();
+                    }
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date());
+                    String file_path="coupons/CUPON-"+cCupon+"-"+timeStamp+".pdf";
+                    File file = new File(getContext().getFilesDir(), file_path);
+                    try {
+                        miDocumento.writeTo(new FileOutputStream(file));
+                        int is_success=registrarCuponControl.set_uri_pdf(id_registro,file_path);
+                        if(is_success>0){
+                            //redirige a mostrar el pdf
+                            Bundle args=new Bundle();
+                            args.putString("uri_pdf",file_path);
+                            Fragment fragment=new PDFViewerFragment();
+                            fragment.setArguments(args);
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.content, fragment);
+                            fragmentTransaction.commit();
+                        }
+                    }
+                    catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    miDocumento.close();
+                }else{
+                    //redirige a mostrar el pdf
+                    Bundle args=new Bundle();
+                    args.putString("uri_pdf",uri);
+                    Fragment fragment=new PDFViewerFragment();
+                    fragment.setArguments(args);
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content, fragment);
+                    fragmentTransaction.commit();
                 }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-
-                miDocumento.close();
             }
         });
     }

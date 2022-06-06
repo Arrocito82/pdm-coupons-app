@@ -27,11 +27,13 @@ import com.example.couponsapp.modelos.Usuario;
 import com.example.couponsapp.vistas.CanjearCuponFragment;
 import com.example.couponsapp.vistas.GestionarCuponFragment;
 import com.example.couponsapp.vistas.GestionarRestauranteFragment;
+import com.example.couponsapp.vistas.PDFViewerFragment;
 import com.example.couponsapp.vistas.RestauranteFragment;
 import com.example.couponsapp.vistas.HomeFragment;
 import com.example.couponsapp.vistas.GestionarUsuarioFragment;
 import com.example.couponsapp.vistas.MisCuponesFragment;
 import com.example.couponsapp.vistas.QRScannerFragment;
+import com.example.couponsapp.vistas.UsuarioFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -247,6 +249,14 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                 replaceFragment(new GestionarRestauranteFragment());
                 setTitle("Restaurantes");
                 break;
+            case R.id.nav_perfil:
+                replaceFragment(new UsuarioFragment());
+                setTitle("Perfil");
+                break;
+            case R.id.nav_pdf_viewer:
+                replaceFragment(new PDFViewerFragment());
+                setTitle("QRs");
+                break;
         }
         setTitle(item.getTitle());
         drawerLayout.closeDrawers();
@@ -255,6 +265,7 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
     private void replaceFragment(Fragment fragment) {
         Bundle data = new Bundle();
         data.putInt("id_user", id_usuario);
+        data.putInt("id_usuario",usuario.getId_usuario());
         fragment.setArguments(data);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

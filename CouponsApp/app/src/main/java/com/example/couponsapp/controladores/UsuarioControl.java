@@ -235,10 +235,9 @@ public class UsuarioControl extends Control {
 
     public ArrayList<Usuario> readMany(String apellidos){
         String []args={"%"+apellidos+"%"};
-        String []columns = {"ID_USUARIO", "ID_ROL", "ID_RESTAURANTE", "USERNAME", "PASSWORD","EMAIL","NOMBRE","APELLIDO","TELEFONO","GOOGLE_USUARIO"};
         ArrayList <Usuario> usuarios=new ArrayList<>();
         this.abrir();
-        Cursor results=db.query("USUARIO",columns,"APELLIDO LIKE ?",args,null,null,null);
+        Cursor results=db.rawQuery("SELECT * FROM USUARIO WHERE APELLIDO LIKE ?",args);
 
         try{
             while(results.moveToNext()){

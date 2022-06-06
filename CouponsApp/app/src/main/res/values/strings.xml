@@ -25,7 +25,7 @@
     <string-array name="restaurante_array">
         <item>Editar</item>
         <item>Ubicar</item>
-<!--        <item>Eliminar</item>-->
+        <!--        <item>Eliminar</item>-->
     </string-array>
     <string name="dialog_crear">Nuevo</string>
     <string name="guardar_usuario_configuracion">Guardar</string>
