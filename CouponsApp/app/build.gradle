@@ -76,4 +76,6 @@ dependencies {
     //Picasso para ver imagenes desde una url
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    //Servicio web
+    implementation 'com.android.volley:volley:1.2.0'
 }

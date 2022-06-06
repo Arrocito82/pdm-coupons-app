@@ -15,11 +15,18 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.couponsapp.controladores.UsuarioControl;
 import com.example.couponsapp.email.Message;
@@ -43,6 +50,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.example.couponsapp.email.SendEmail;
 import com.example.couponsapp.email.Config;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -120,8 +131,34 @@ public class InicioActivity extends AppCompatActivity implements NavigationView.
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
-                SendEmail javaMailAPI = new SendEmail(this, mEmail, mSubject, mContent);
-                javaMailAPI.execute();
+
+                //Servicio web para obtener correo por defecto
+                String url = "http://192.168.1.4/serviciosWeb/correo.php";
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url,null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        JSONObject object = null;
+                        String correo= "", password="";
+                        try {
+                            object = response.getJSONObject(0);
+                            correo = object.getString("EMAIL");
+                            password = object.getString("PASSWORD");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        SendEmail javaMailAPI = new SendEmail(getApplicationContext(), mEmail, mSubject, mContent, correo, password);
+                        javaMailAPI.execute();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("error", error.getMessage());
+                    }
+                });
+
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(request);
+
             }
             usuario = usuarioControl.traerUsuario(userString, "bixxortnnuis34");
             Uri userPhoto = cuenta.getPhotoUrl();
