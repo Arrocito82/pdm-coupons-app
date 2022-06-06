@@ -25,11 +25,35 @@ public class RegistrarCuponControl extends Control {
         current.put("ID_CUPON", registrarCupon.getCupon().getId_cupon());
         current.put("ID_USUARIO", registrarCupon.getUsuario().getId_usuario());
         current.put("FECHA_CANJEO", registrarCupon.getFecha_registro());
+        current.put("URI_PDF","");
         id_res = db.insert("REGISTROCUPON", null, current);
         this.cerrar();
         return  id_res;
     }
 
+    public String get_uri_pdf(int id_registro){
+        String uri="";
+        String []args={String.valueOf(id_registro)};
+        this.abrir();
+        Cursor result=db.rawQuery("Select URI_PDF from REGISTROCUPON where ID_REGISTRO = ?",args);
+        if(result.moveToFirst()){
+            uri=result.getString(0);
+        }
+        result.close();
+        this.cerrar();
+        return uri;
+    }
+
+    public int set_uri_pdf(int id_registro,String uri){
+        String []args={String.valueOf(id_registro)};
+        int id_res;
+        ContentValues current = new ContentValues();
+        current.put("URI_PDF",uri);
+        this.abrir();
+        id_res = db.update("REGISTROCUPON", current, "ID_REGISTRO = ?", args);
+        this.cerrar();
+        return id_res;
+    }
     public ArrayList<RegistrarCupon> traerMisCupones(int id_user){
         this.abrir();
         ArrayList<RegistrarCupon> list = new ArrayList<>();

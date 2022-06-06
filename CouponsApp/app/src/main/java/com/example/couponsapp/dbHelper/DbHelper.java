@@ -77,6 +77,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "ID_CUPON INTEGER NOT NULL, \n" +
                 "ID_USUARIO INTEGER NOT NULL, \n" +
                 "FECHA_CANJEO VARCHAR(35) NOT NULL, \n" +
+                "URI_PDF TEXT, \n" +
                 "UNIQUE(ID_REGISTRO, ID_CUPON, ID_USUARIO))");
 
 
