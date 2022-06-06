@@ -18,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.couponsapp.R;
 import com.example.couponsapp.adapter.RestauranteAdapter;
@@ -82,9 +85,9 @@ public class GestionarRestauranteFragment extends Fragment {
                             case 0:
                                 adapter.editar(view,getParentFragmentManager(),adapter.getItem(position));
                                 break;
-//                            case 1:
-//                                adapter.eliminar(position);
-//                                break;
+                            case 1:
+                                adapter.ver_mapa(view,getParentFragmentManager(),adapter.getItem(position));
+                                break;
                         }
                     }
                 });
